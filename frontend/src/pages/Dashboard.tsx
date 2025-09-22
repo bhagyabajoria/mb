@@ -472,11 +472,31 @@ const Dashboard = () => {
         onValueChange={setActiveTab}
         className="space-y-6"
       >
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="records">Recent Records</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          <TabsTrigger value="verification">Verification</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 sm:gap-0 h-auto p-1">
+          <TabsTrigger 
+            value="overview"
+            className="text-xs sm:text-sm px-2 sm:px-3 py-2 data-[state=active]:bg-govt-blue data-[state=active]:text-white"
+          >
+            Overview
+          </TabsTrigger>
+          <TabsTrigger 
+            value="records"
+            className="text-xs sm:text-sm px-2 sm:px-3 py-2 data-[state=active]:bg-govt-blue data-[state=active]:text-white"
+          >
+            Records
+          </TabsTrigger>
+          <TabsTrigger 
+            value="analytics"
+            className="text-xs sm:text-sm px-2 sm:px-3 py-2 data-[state=active]:bg-govt-blue data-[state=active]:text-white"
+          >
+            Analytics
+          </TabsTrigger>
+          <TabsTrigger 
+            value="verification"
+            className="text-xs sm:text-sm px-2 sm:px-3 py-2 data-[state=active]:bg-govt-blue data-[state=active]:text-white"
+          >
+            Verify
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview">
