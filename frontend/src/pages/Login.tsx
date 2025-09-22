@@ -18,17 +18,14 @@ const Login = () => {
       import.meta.env.VITE_GOOGLE_CLIENT_ID ||
       "353620055340-i4nv19h4o58j8jhvvkquhejcb6a5kjgd.apps.googleusercontent.com";
 
-    // Use the correct redirect URI based on environment
-    // For development, we'll use the same domain pattern as production
-    const isProduction =
-      window.location.hostname === "medi-bridge-ebon.vercel.app";
-    const redirectUri = isProduction
-      ? "https://medi-bridge-ebon.vercel.app/auth/callback"
-      : `${window.location.origin}/auth/callback`; // Dynamic port detection
+    // Use dynamic redirect URI based on current domain
+    // This will work with any domain (localhost, vercel, custom domain, etc.)
+    const redirectUri = `${window.location.origin}/auth/callback`;
 
     // Debug: Log the redirect URI to console
     console.log("🔍 Debug - Redirect URI:", redirectUri);
     console.log("🔍 Debug - Current location:", window.location.href);
+    console.log("🔍 Debug - Current origin:", window.location.origin);
 
     const scope = "email profile";
     const responseType = "code";
@@ -56,12 +53,9 @@ const Login = () => {
       import.meta.env.VITE_GOOGLE_CLIENT_ID ||
       "353620055340-i4nv19h4o58j8jhvvkquhejcb6a5kjgd.apps.googleusercontent.com";
 
-    // Use the correct redirect URI based on environment
-    const isProduction =
-      window.location.hostname === "medi-bridge-ebon.vercel.app";
-    const redirectUri = isProduction
-      ? "https://medi-bridge-ebon.vercel.app/auth/callback"
-      : `${window.location.origin}/auth/callback`; // Use port 8080 where Vite is running
+    // Use dynamic redirect URI based on current domain
+    // This will work with any domain (localhost, vercel, custom domain, etc.)
+    const redirectUri = `${window.location.origin}/auth/callback`;
 
     const scope = "email profile";
     const responseType = "code";
