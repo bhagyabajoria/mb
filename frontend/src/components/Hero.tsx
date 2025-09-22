@@ -115,7 +115,7 @@ const Hero = () => {
           <div className="relative order-1 lg:order-2 flex justify-center">
             <div className="w-full max-w-md lg:max-w-lg xl:max-w-xl">
               <img
-                src="/1757848899458.png"
+                src="/main.png"
                 alt="MediBridge Logo"
                 className="w-full h-auto object-contain rounded-lg shadow-[var(--shadow-document)] 
                            transition-transform duration-300 hover:scale-105"

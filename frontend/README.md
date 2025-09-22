@@ -63,7 +63,7 @@ A modern React-based frontend application for the MediBridge healthcare platform
 ```
 frontend/
 ├── public/                 # Static assets
-│   ├── 1757848899458.jpg  # Main logo
+│   ├── main.png          # Main logo
 │   └── ...                # Other static files
 ├── src/
 │   ├── components/        # Reusable UI components

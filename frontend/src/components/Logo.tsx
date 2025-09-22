@@ -27,7 +27,7 @@ const Logo = ({
 
   const LogoIcon = () => (
     <img
-      src="/1757848899458.png"
+      src="/main.png"
       alt="MediBridge Logo"
       className={`${sizeClasses[size]} object-contain`}
     />
