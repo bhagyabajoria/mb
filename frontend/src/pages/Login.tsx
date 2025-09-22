@@ -61,7 +61,7 @@ const Login = () => {
       window.location.hostname === "medi-bridge-ebon.vercel.app";
     const redirectUri = isProduction
       ? "https://medi-bridge-ebon.vercel.app/auth/callback"
-      : "http://localhost:8080/auth/callback"; // Use port 8080 where Vite is running
+      : `${window.location.origin}/auth/callback`; // Use port 8080 where Vite is running
 
     const scope = "email profile";
     const responseType = "code";
