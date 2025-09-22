@@ -14,26 +14,45 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Project paths
-PROJECT_DIR="/var/www/MediBridge/frontend"
+PROJECT_DIR="/var/www/MediBridge"
+FRONTEND_DIR="/var/www/MediBridge/frontend"
 DEPLOY_DIR="/var/www/medibridge/frontend"
+REPO_URL="https://github.com/bhagyabajoria/mb.git"
 
-# Step 1: Navigate to project directory
-echo -e "${BLUE}📁 Navigating to project directory...${NC}"
-cd $PROJECT_DIR || {
-    echo -e "${RED}❌ Error: Could not navigate to $PROJECT_DIR${NC}"
+# Step 1: Remove old project directory
+echo -e "${BLUE}�️  Removing old project files...${NC}"
+if [ -d "$PROJECT_DIR" ]; then
+    sudo rm -rf $PROJECT_DIR
+    echo -e "${GREEN}✅ Old project files removed${NC}"
+else
+    echo -e "${YELLOW}⚠️  No existing project directory found${NC}"
+fi
+
+# Step 2: Create parent directory
+echo -e "${BLUE}📁 Creating project directory...${NC}"
+sudo mkdir -p /var/www
+cd /var/www || {
+    echo -e "${RED}❌ Error: Could not navigate to /var/www${NC}"
+    exit 1
+}
+
+# Step 3: Clone fresh repository
+echo -e "${BLUE}📥 Cloning fresh repository...${NC}"
+sudo git clone $REPO_URL MediBridge || {
+    echo -e "${RED}❌ Error: Git clone failed${NC}"
+    exit 1
+}
+echo -e "${GREEN}✅ Repository cloned successfully${NC}"
+
+# Step 4: Navigate to frontend directory
+echo -e "${BLUE}📁 Navigating to frontend directory...${NC}"
+cd $FRONTEND_DIR || {
+    echo -e "${RED}❌ Error: Could not navigate to $FRONTEND_DIR${NC}"
     exit 1
 }
 echo -e "${GREEN}✅ In directory: $(pwd)${NC}"
 
-# Step 2: Pull latest changes from Git
-echo -e "${BLUE}📥 Pulling latest changes from Git...${NC}"
-sudo git pull origin main || {
-    echo -e "${RED}❌ Error: Git pull failed${NC}"
-    exit 1
-}
-echo -e "${GREEN}✅ Git pull completed${NC}"
-
-# Step 3: Check if logo file exists
+# Step 5: Check if logo file exists
 echo -e "${BLUE}🖼️  Checking for logo file...${NC}"
 if [ -f "public/main.png" ]; then
     echo -e "${GREEN}✅ Logo file found${NC}"
@@ -41,7 +60,7 @@ else
     echo -e "${YELLOW}⚠️  Warning: Logo file not found${NC}"
 fi
 
-# Step 4: Install/update dependencies
+# Step 6: Install/update dependencies
 echo -e "${BLUE}📦 Installing/updating dependencies...${NC}"
 sudo npm install || {
     echo -e "${RED}❌ Error: npm install failed${NC}"
@@ -49,12 +68,12 @@ sudo npm install || {
 }
 echo -e "${GREEN}✅ Dependencies updated${NC}"
 
-# Step 5: Clean previous build
+# Step 7: Clean previous build
 echo -e "${BLUE}🧹 Cleaning previous build...${NC}"
 sudo rm -rf dist/
 echo -e "${GREEN}✅ Previous build cleaned${NC}"
 
-# Step 6: Build the project
+# Step 8: Build the project
 echo -e "${BLUE}🔨 Building the project...${NC}"
 sudo npm run build || {
     echo -e "${RED}❌ Error: Build failed${NC}"
@@ -62,7 +81,7 @@ sudo npm run build || {
 }
 echo -e "${GREEN}✅ Build completed successfully${NC}"
 
-# Step 7: Verify build includes logo
+# Step 9: Verify build includes logo
 echo -e "${BLUE}🔍 Verifying build includes logo...${NC}"
 if [ -f "dist/main.png" ]; then
     echo -e "${GREEN}✅ Logo included in build${NC}"
@@ -70,11 +89,11 @@ else
     echo -e "${YELLOW}⚠️  Warning: Logo not found in build${NC}"
 fi
 
-# Step 8: Backup current deployment (optional)
+# Step 10: Backup current deployment (optional)
 echo -e "${BLUE}💾 Creating backup of current deployment...${NC}"
 sudo cp -r $DEPLOY_DIR $DEPLOY_DIR.backup.$(date +%Y%m%d_%H%M%S) 2>/dev/null || echo -e "${YELLOW}⚠️  Backup skipped (deploy dir may not exist)${NC}"
 
-# Step 9: Deploy new build
+# Step 11: Deploy new build
 echo -e "${BLUE}🚀 Deploying new build...${NC}"
 sudo rm -rf $DEPLOY_DIR/*
 sudo cp -r dist/* $DEPLOY_DIR/ || {
@@ -83,13 +102,13 @@ sudo cp -r dist/* $DEPLOY_DIR/ || {
 }
 echo -e "${GREEN}✅ Files deployed successfully${NC}"
 
-# Step 10: Set proper permissions
+# Step 12: Set proper permissions
 echo -e "${BLUE}🔐 Setting proper permissions...${NC}"
 sudo chown -R www-data:www-data $DEPLOY_DIR
 sudo chmod -R 755 $DEPLOY_DIR
 echo -e "${GREEN}✅ Permissions set${NC}"
 
-# Step 11: Verify logo is deployed
+# Step 13: Verify logo is deployed
 echo -e "${BLUE}🔍 Verifying logo deployment...${NC}"
 if [ -f "$DEPLOY_DIR/main.png" ]; then
     echo -e "${GREEN}✅ Logo successfully deployed${NC}"
@@ -97,7 +116,7 @@ else
     echo -e "${RED}❌ Error: Logo not found in deployment${NC}"
 fi
 
-# Step 12: Test Nginx configuration
+# Step 14: Test Nginx configuration
 echo -e "${BLUE}🔧 Testing Nginx configuration...${NC}"
 sudo nginx -t || {
     echo -e "${RED}❌ Error: Nginx configuration test failed${NC}"
@@ -105,7 +124,7 @@ sudo nginx -t || {
 }
 echo -e "${GREEN}✅ Nginx configuration is valid${NC}"
 
-# Step 13: Restart Nginx
+# Step 15: Restart Nginx
 echo -e "${BLUE}🔄 Restarting Nginx...${NC}"
 sudo systemctl restart nginx || {
     echo -e "${RED}❌ Error: Nginx restart failed${NC}"
@@ -113,7 +132,7 @@ sudo systemctl restart nginx || {
 }
 echo -e "${GREEN}✅ Nginx restarted successfully${NC}"
 
-# Step 14: Check Nginx status
+# Step 16: Check Nginx status
 echo -e "${BLUE}📊 Checking Nginx status...${NC}"
 if sudo systemctl is-active nginx >/dev/null 2>&1; then
     echo -e "${GREEN}✅ Nginx is running${NC}"
@@ -122,7 +141,7 @@ else
     exit 1
 fi
 
-# Step 15: Test website accessibility
+# Step 17: Test website accessibility
 echo -e "${BLUE}🌐 Testing website accessibility...${NC}"
 HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://mb.egamei.com)
 if [ "$HTTP_STATUS" = "200" ]; then
@@ -137,7 +156,8 @@ echo "================================================"
 echo -e "${GREEN}🎉 MediBridge Frontend Update Completed!${NC}"
 echo ""
 echo -e "${BLUE}📊 Summary:${NC}"
-echo -e "   • Git pull: ${GREEN}✅${NC}"
+echo -e "   • Old files removed: ${GREEN}✅${NC}"
+echo -e "   • Fresh clone: ${GREEN}✅${NC}"
 echo -e "   • Dependencies: ${GREEN}✅${NC}"
 echo -e "   • Build: ${GREEN}✅${NC}"
 echo -e "   • Deployment: ${GREEN}✅${NC}"
