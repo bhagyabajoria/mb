@@ -473,25 +473,25 @@ const Dashboard = () => {
         className="space-y-6"
       >
         <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 sm:gap-0 h-auto p-1">
-          <TabsTrigger 
+          <TabsTrigger
             value="overview"
             className="text-xs sm:text-sm px-2 sm:px-3 py-2 data-[state=active]:bg-govt-blue data-[state=active]:text-white"
           >
             Overview
           </TabsTrigger>
-          <TabsTrigger 
+          <TabsTrigger
             value="records"
             className="text-xs sm:text-sm px-2 sm:px-3 py-2 data-[state=active]:bg-govt-blue data-[state=active]:text-white"
           >
             Records
           </TabsTrigger>
-          <TabsTrigger 
+          <TabsTrigger
             value="analytics"
             className="text-xs sm:text-sm px-2 sm:px-3 py-2 data-[state=active]:bg-govt-blue data-[state=active]:text-white"
           >
             Analytics
           </TabsTrigger>
-          <TabsTrigger 
+          <TabsTrigger
             value="verification"
             className="text-xs sm:text-sm px-2 sm:px-3 py-2 data-[state=active]:bg-govt-blue data-[state=active]:text-white"
           >
