@@ -52,7 +52,7 @@ const Features = () => {
       title: "ICD-11 (TM2) Classification",
       description:
         "Documents are automatically classified using WHO's latest International Classification of Diseases.",
-      color: "text-govt-green",
+      color: "text-govt-blue",
     },
   ];
 
