@@ -40,29 +40,32 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="w-full bg-card border-b-2 border-govt-blue sticky top-0 z-50">
-      <div className="container mx-auto px-4 sm:px-6 py-2 sm:py-3">
+    <nav className="w-full bg-card/95 backdrop-blur-lg border-b-2 border-govt-blue/20 sticky top-0 z-50 shadow-lg shadow-govt-blue/5 animate-navbar-slide">
+      <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           {/* Government Style Logo */}
           <div className="flex items-center space-x-2 sm:space-x-4">
-            <Link to="/" className="flex items-center space-x-2 sm:space-x-3">
-              <div className="flex items-center">
+            <Link
+              to="/"
+              className="flex items-center space-x-2 sm:space-x-3 group"
+            >
+              <div className="flex items-center transition-transform duration-300 group-hover:scale-105">
                 <img
                   src="/main.png"
                   alt="MediBridge Logo"
-                  className="h-8 w-8 sm:h-10 sm:w-10 object-contain rounded"
+                  className="h-8 w-8 sm:h-12 sm:w-12 object-contain rounded-lg shadow-md group-hover:shadow-lg transition-all duration-300"
                 />
               </div>
               <div className="hidden sm:block">
-                <div className="text-lg sm:text-xl font-bold text-govt-blue">
+                <div className="text-lg sm:text-2xl font-bold text-govt-blue group-hover:text-govt-blue/90 transition-colors duration-300">
                   MediBridge
                 </div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-xs text-muted-foreground group-hover:text-govt-blue/60 transition-colors duration-300">
                   Digital Health Documents
                 </div>
               </div>
               <div className="block sm:hidden">
-                <div className="text-base font-bold text-govt-blue">
+                <div className="text-base font-bold text-govt-blue group-hover:text-govt-blue/90 transition-colors duration-300">
                   MediBridge
                 </div>
               </div>
@@ -70,69 +73,72 @@ const Navigation = () => {
           </div>
 
           {/* Navigation Links */}
-          <div className="hidden lg:flex items-center space-x-6">
+          <div className="hidden lg:flex items-center space-x-8">
             <a
               href="#services"
               onClick={handleNavClick}
-              className="text-sm font-medium text-muted-foreground hover:text-govt-blue transition-colors"
+              className="relative text-sm font-medium text-muted-foreground hover:text-govt-blue transition-all duration-300 group py-2"
             >
               Services
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-govt-blue to-govt-green transition-all duration-300 group-hover:w-full"></span>
             </a>
             <a
               href="#documents"
               onClick={handleNavClick}
-              className="text-sm font-medium text-muted-foreground hover:text-govt-blue transition-colors"
+              className="relative text-sm font-medium text-muted-foreground hover:text-govt-blue transition-all duration-300 group py-2"
             >
               Documents
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-govt-blue to-govt-green transition-all duration-300 group-hover:w-full"></span>
             </a>
             <a
               href="#verify"
               onClick={handleNavClick}
-              className="text-sm font-medium text-muted-foreground hover:text-govt-blue transition-colors"
+              className="relative text-sm font-medium text-muted-foreground hover:text-govt-blue transition-all duration-300 group py-2"
             >
               Verify
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-govt-blue to-govt-green transition-all duration-300 group-hover:w-full"></span>
             </a>
             <a
               href="#help"
               onClick={handleNavClick}
-              className="text-sm font-medium text-muted-foreground hover:text-govt-blue transition-colors"
+              className="relative text-sm font-medium text-muted-foreground hover:text-govt-blue transition-all duration-300 group py-2"
             >
               Help
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-govt-blue to-govt-green transition-all duration-300 group-hover:w-full"></span>
             </a>
           </div>
 
           {/* Login Section */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="flex items-center space-x-3 sm:space-x-4">
             <Link to="/login" className="hidden sm:block">
               <Button
                 variant="govt-outline"
                 size="sm"
-                className="text-xs sm:text-sm"
+                className="text-xs sm:text-sm border-2 hover:bg-govt-blue/5 hover:border-govt-blue/70 transition-all duration-300 hover:shadow-md hover:shadow-govt-blue/20 group"
               >
-                Sign In
+                <span className="group-hover:scale-105 transition-transform duration-300">
+                  Sign In
+                </span>
               </Button>
             </Link>
             <Link to="/login" className="block sm:hidden">
-              <Button variant="govt-outline" size="sm" className="text-xs px-2">
+              <Button
+                variant="govt-outline"
+                size="sm"
+                className="text-xs px-2 border-2 hover:bg-govt-blue/5 transition-all duration-300"
+              >
                 Login
               </Button>
             </Link>
-            <Button
-              variant="govt"
-              size="sm"
-              className="text-xs sm:text-sm hidden sm:block"
-            >
-              Register
-            </Button>
             <button
               onClick={toggleMobileMenu}
-              className="lg:hidden p-3 text-govt-blue hover:bg-govt-blue/10 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-sm border border-govt-blue/20"
+              className="lg:hidden p-3 text-govt-blue hover:bg-govt-blue/10 rounded-xl transition-all duration-300 transform hover:scale-110 active:scale-95 shadow-md hover:shadow-lg border border-govt-blue/30 hover:border-govt-blue/50 bg-gradient-to-br from-card to-secondary/10"
               aria-label="Toggle navigation menu"
             >
               {isMobileMenuOpen ? (
-                <X className="h-5 w-5 transition-transform duration-200" />
+                <X className="h-5 w-5 transition-transform duration-300 rotate-0 hover:rotate-90" />
               ) : (
-                <Menu className="h-5 w-5 transition-transform duration-200" />
+                <Menu className="h-5 w-5 transition-transform duration-300" />
               )}
             </button>
           </div>
@@ -197,7 +203,7 @@ const Navigation = () => {
                       size="lg"
                       className="w-full py-4 text-base font-semibold bg-gradient-to-r from-govt-blue to-govt-blue/90 hover:from-govt-blue/90 hover:to-govt-blue shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
                     >
-                      Get Started
+                      Register
                     </Button>
                   </Link>
 
