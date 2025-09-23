@@ -1,125 +1,114 @@
 import { Button } from "@/components/ui/button";
 import { Shield, FileText, Folder, Check } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <section className="bg-background">
-      {/* Government Banner */}
-      <div className="bg-[var(--govt-gradient)] py-2 sm:py-3">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-center text-white text-xs sm:text-sm text-center">
-            <Shield className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 flex-shrink-0" />
-            <span className="hidden sm:inline">
-              Government of India Initiative | Secure • Authentic • Accessible
-            </span>
-            <span className="sm:hidden">Digital India Initiative</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-20">
+    <section className="bg-gradient-to-br from-[#EBEAEA] via-white to-[#EBEAEA] relative overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-[#1D0A69] rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-[#0D6EFD] rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-[#198754] rounded-full blur-3xl"></div>
+      </div>{" "}
+      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-16 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-20 items-center">
           {/* Content */}
           <div className="space-y-8 sm:space-y-10 order-2 lg:order-1">
             <div className="space-y-6 sm:space-y-8">
-              <div className="inline-flex items-center bg-secondary text-govt-blue px-3 sm:px-4 py-2 rounded border border-govt-blue/20 text-xs sm:text-sm">
-                <FileText className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                Digital India Health Initiative
+              <div className="inline-flex items-center bg-white/80 backdrop-blur-sm text-[#0D6EFD] px-4 sm:px-6 py-3 rounded-full border border-[#0D6EFD]/20 text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                <FileText className="w-3 h-3 sm:w-4 sm:h-4 mr-2 sm:mr-3" />
+                <span className="font-semibold">
+                  Digital India Health Initiative
+                </span>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-tight">
-                Bridging
-                <span className="text-govt-blue block sm:inline">
-                  {" "}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#1D0A69] leading-tight animate-fade-in">
+                <span className="bg-gradient-to-r from-[#1D0A69] to-[#0D6EFD] bg-clip-text text-transparent">
+                  Bridging
+                </span>
+                <br />
+                <span className="text-[#0D6EFD] block animate-slide-up">
                   Ayush & Modern Medicine
                 </span>
               </h1>
 
-              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl">
+              <p className="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-xl animate-fade-in-up">
                 Connecting AYUSH systems with ICD-11 through NAMASTE for
                 comprehensive, globally recognized patient care.
               </p>
             </div>
 
             {/* Key Features */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              <div className="flex items-center space-x-2 sm:space-x-3">
-                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-govt-green flex items-center justify-center flex-shrink-0">
-                  <Check className="w-2 h-2 sm:w-3 sm:h-3 text-white" />
+            <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 sm:gap-6">
+              {[
+                "Secure Cloud Storage",
+                "Document Verification",
+                "Instant Sharing",
+                "Mobile Access",
+              ].map((feature, index) => (
+                <div
+                  key={index}
+                  className="flex items-center space-x-2 sm:space-x-4 group hover:bg-white/50 p-2 sm:p-3 rounded-lg transition-all duration-300"
+                >
+                  <div className="w-4 h-4 sm:w-6 sm:h-6 rounded-full bg-gradient-to-r from-[#198754] to-[#198754]/80 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <Check className="w-2 h-2 sm:w-4 sm:h-4 text-white" />
+                  </div>
+                  <span className="text-xs sm:text-base text-[#1D0A69] font-medium group-hover:text-[#0D6EFD] transition-colors duration-300">
+                    {feature}
+                  </span>
                 </div>
-                <span className="text-xs sm:text-sm text-foreground">
-                  Secure Cloud Storage
-                </span>
-              </div>
-              <div className="flex items-center space-x-2 sm:space-x-3">
-                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-govt-green flex items-center justify-center flex-shrink-0">
-                  <Check className="w-2 h-2 sm:w-3 sm:h-3 text-white" />
-                </div>
-                <span className="text-xs sm:text-sm text-foreground">
-                  Document Verification
-                </span>
-              </div>
-              <div className="flex items-center space-x-2 sm:space-x-3">
-                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-govt-green flex items-center justify-center flex-shrink-0">
-                  <Check className="w-2 h-2 sm:w-3 sm:h-3 text-white" />
-                </div>
-                <span className="text-xs sm:text-sm text-foreground">
-                  Instant Sharing
-                </span>
-              </div>
-              <div className="flex items-center space-x-2 sm:space-x-3">
-                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-govt-green flex items-center justify-center flex-shrink-0">
-                  <Check className="w-2 h-2 sm:w-3 sm:h-3 text-white" />
-                </div>
-                <span className="text-xs sm:text-sm text-foreground">
-                  Mobile Access
-                </span>
-              </div>
+              ))}
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 pt-2">
-              <Button
-                variant="govt"
-                size="lg"
-                className="font-medium text-sm sm:text-base w-full sm:w-auto px-8 py-3"
-              >
-                Create Your Health Vault
-              </Button>
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 pt-1 pb-2">
+              <Link to="/login" className="w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  className="font-semibold text-base sm:text-lg w-full px-8 py-4 bg-gradient-to-r from-[#1D0A69] to-[#0D6EFD] hover:from-[#0D6EFD] hover:to-[#1D0A69] text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
+                >
+                  🚀 Create Your Health Vault
+                </Button>
+              </Link>
             </div>
 
             {/* Trust Indicators */}
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6 pt-6 border-t border-border/30">
-              <div className="flex items-center space-x-2">
-                <Shield className="w-4 h-4 text-govt-green" />
-                <span className="text-xs sm:text-sm text-muted-foreground">
-                  SSL Secured
-                </span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <FileText className="w-4 h-4 text-govt-blue" />
-                <span className="text-xs sm:text-sm text-muted-foreground">
-                  ISO 27001
-                </span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Folder className="w-4 h-4 text-govt-orange" />
-                <span className="text-xs sm:text-sm text-muted-foreground">
-                  HIPAA Compliant
-                </span>
-              </div>
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-8 pt-8 border-t border-white/30">
+              {[
+                { icon: Shield, text: "SSL Secured", color: "#198754" },
+                { icon: FileText, text: "ISO 27001", color: "#0D6EFD" },
+                { icon: Folder, text: "HIPAA Compliant", color: "#1D0A69" },
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  className="flex items-center space-x-1 sm:space-x-2 group hover:bg-white/30 px-2 sm:px-3 py-1 sm:py-2 rounded-lg transition-all duration-300"
+                >
+                  <item.icon
+                    className="w-3 h-3 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform duration-300"
+                    style={{ color: item.color }}
+                  />
+                  <span className="text-xs sm:text-sm text-gray-600 group-hover:text-[#1D0A69] font-medium transition-colors duration-300">
+                    {item.text}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Logo Display */}
           <div className="relative order-1 lg:order-2 flex justify-center">
-            <div className="w-full max-w-md lg:max-w-lg xl:max-w-xl">
+            <div className="w-full max-w-md lg:max-w-lg xl:max-w-xl relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#1D0A69]/20 to-[#0D6EFD]/20 rounded-full blur-3xl transform scale-110"></div>
               <img
                 src="/main.png"
                 alt="MediBridge Logo"
-                className="w-full h-auto object-contain rounded-lg shadow-[var(--shadow-document)] 
-                           transition-transform duration-300 hover:scale-105"
+                className="w-full h-auto object-contain rounded-2xl shadow-2xl 
+                           transition-all duration-500 hover:scale-105 hover:rotate-2 relative z-10
+                           animate-float"
               />
+              <div className="absolute -bottom-4 -right-4 w-8 h-8 bg-gradient-to-r from-[#198754] to-[#0D6EFD] rounded-full animate-ping"></div>
+              <div className="absolute -top-4 -left-4 w-6 h-6 bg-[#1D0A69] rounded-full animate-bounce"></div>
             </div>
           </div>
         </div>

@@ -17,9 +17,14 @@ const Navigation = () => {
 
         // Add delay to allow menu to close, then scroll with offset
         setTimeout(() => {
-          const navHeight = 80; // Account for sticky nav height
+          const nav = document.querySelector("nav");
+          const navHeight = nav ? nav.offsetHeight : 70; // Dynamic nav height
+          const additionalOffset = 20; // Extra space for better visual separation
           const targetPosition =
-            target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+            target.getBoundingClientRect().top +
+            window.pageYOffset -
+            navHeight -
+            additionalOffset;
 
           window.scrollTo({
             top: targetPosition,
@@ -41,8 +46,12 @@ const Navigation = () => {
           {/* Government Style Logo */}
           <div className="flex items-center space-x-2 sm:space-x-4">
             <Link to="/" className="flex items-center space-x-2 sm:space-x-3">
-              <div className="p-1.5 sm:p-2 bg-[var(--folder-gradient)] rounded">
-                <FolderOpen className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+              <div className="flex items-center">
+                <img
+                  src="/main.png"
+                  alt="MediBridge Logo"
+                  className="h-8 w-8 sm:h-10 sm:w-10 object-contain rounded"
+                />
               </div>
               <div className="hidden sm:block">
                 <div className="text-lg sm:text-xl font-bold text-govt-blue">

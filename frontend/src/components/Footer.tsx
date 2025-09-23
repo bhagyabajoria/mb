@@ -8,8 +8,12 @@ const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-[var(--folder-gradient)] rounded">
-                <FolderOpen className="h-6 w-6 text-white" />
+              <div className="flex items-center">
+                <img
+                  src="/main.png"
+                  alt="MediBridge Logo"
+                  className="h-10 w-10 object-contain rounded"
+                />
               </div>
               <div>
                 <div className="text-xl font-bold text-govt-blue">
