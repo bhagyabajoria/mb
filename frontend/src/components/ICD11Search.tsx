@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,8 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Search, CheckCircle, AlertCircle } from "lucide-react";
 
 // Import the WHO ICD-11 ECT package and styles
-import * as ECT from '@whoicd/icd11ect';
-import '@whoicd/icd11ect/style.css';
+import * as ECT from "@whoicd/icd11ect";
+import "@whoicd/icd11ect/style.css";
 
 // Interface for the selected entity from WHO ICD-11
 export interface ISelectedEntity {
@@ -33,10 +33,12 @@ const ICD11Search: React.FC<ICD11SearchProps> = ({
   placeholder = "Search for diseases, conditions, or symptoms...",
   label = "Disease/Condition Search",
   value = "",
-  className = ""
+  className = "",
 }) => {
   const [isInitialized, setIsInitialized] = useState(false);
-  const [selectedEntity, setSelectedEntity] = useState<ISelectedEntity | null>(null);
+  const [selectedEntity, setSelectedEntity] = useState<ISelectedEntity | null>(
+    null
+  );
   const [searchValue, setSearchValue] = useState(value);
   const iNo = useRef(Math.floor(Math.random() * 10000)); // Unique instance number
   const inputRef = useRef<HTMLInputElement>(null);
@@ -46,7 +48,7 @@ const ICD11Search: React.FC<ICD11SearchProps> = ({
     if (!isInitialized) {
       const settings = {
         // WHO's official test API endpoint
-        apiServerUrl: 'https://icd11restapi-developer-test.azurewebsites.net',
+        apiServerUrl: "https://icd11restapi-developer-test.azurewebsites.net",
         autoBind: false, // Manual binding for React
         // Enable flexible search
         flexisearch: true,
@@ -58,10 +60,10 @@ const ICD11Search: React.FC<ICD11SearchProps> = ({
 
       const callbacks = {
         selectedEntityFunction: (entity: ISelectedEntity) => {
-          console.log('ICD-11 Entity Selected:', entity);
+          console.log("ICD-11 Entity Selected:", entity);
           setSelectedEntity(entity);
           setSearchValue(entity.title);
-          
+
           // Call the parent callback if provided
           if (onSelect) {
             onSelect(entity);
@@ -72,15 +74,15 @@ const ICD11Search: React.FC<ICD11SearchProps> = ({
         },
         // Optional: Add error handling
         errorFunction: (error: any) => {
-          console.error('ICD-11 Search Error:', error);
-        }
+          console.error("ICD-11 Search Error:", error);
+        },
       };
 
       try {
         ECT.Handler.configure(settings, callbacks);
         setIsInitialized(true);
       } catch (error) {
-        console.error('Failed to configure ICD-11 ECT:', error);
+        console.error("Failed to configure ICD-11 ECT:", error);
       }
     }
   }, [isInitialized, onSelect]);
@@ -91,7 +93,7 @@ const ICD11Search: React.FC<ICD11SearchProps> = ({
       try {
         ECT.Handler.bind(iNo.current);
       } catch (error) {
-        console.error('Failed to bind ICD-11 ECT:', error);
+        console.error("Failed to bind ICD-11 ECT:", error);
       }
     }
 
@@ -101,7 +103,7 @@ const ICD11Search: React.FC<ICD11SearchProps> = ({
         try {
           ECT.Handler.unbind(iNo.current);
         } catch (error) {
-          console.error('Failed to unbind ICD-11 ECT:', error);
+          console.error("Failed to unbind ICD-11 ECT:", error);
         }
       }
     };
@@ -110,7 +112,7 @@ const ICD11Search: React.FC<ICD11SearchProps> = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setSearchValue(newValue);
-    
+
     // Clear selected entity if user starts typing again
     if (selectedEntity && newValue !== selectedEntity.title) {
       setSelectedEntity(null);
@@ -128,10 +130,13 @@ const ICD11Search: React.FC<ICD11SearchProps> = ({
 
   return (
     <div className={`space-y-3 ${className}`}>
-      <Label htmlFor={`icd11-search-${iNo.current}`} className="text-sm font-medium text-foreground">
+      <Label
+        htmlFor={`icd11-search-${iNo.current}`}
+        className="text-sm font-medium text-foreground"
+      >
         {label}
       </Label>
-      
+
       <div className="relative">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -157,14 +162,14 @@ const ICD11Search: React.FC<ICD11SearchProps> = ({
             </button>
           )}
         </div>
-        
+
         {/* Search results container - styled by ECT but we can override */}
-        <div 
-          className="ctw-window" 
+        <div
+          className="ctw-window"
           data-ctw-ino={iNo.current}
           style={{
-            maxHeight: '300px',
-            overflowY: 'auto',
+            maxHeight: "300px",
+            overflowY: "auto",
             zIndex: 1000,
           }}
         />
@@ -178,18 +183,22 @@ const ICD11Search: React.FC<ICD11SearchProps> = ({
               <CheckCircle className="h-5 w-5 text-govt-green mt-0.5 flex-shrink-0" />
               <div className="space-y-1 flex-grow">
                 <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="bg-govt-blue/10 text-govt-blue">
+                  <Badge
+                    variant="secondary"
+                    className="bg-govt-blue/10 text-govt-blue"
+                  >
                     {selectedEntity.code}
                   </Badge>
                   <span className="text-sm font-medium text-foreground">
                     {selectedEntity.title}
                   </span>
                 </div>
-                {selectedEntity.selectedText && selectedEntity.selectedText !== selectedEntity.title && (
-                  <p className="text-xs text-muted-foreground">
-                    Search term: "{selectedEntity.selectedText}"
-                  </p>
-                )}
+                {selectedEntity.selectedText &&
+                  selectedEntity.selectedText !== selectedEntity.title && (
+                    <p className="text-xs text-muted-foreground">
+                      Search term: "{selectedEntity.selectedText}"
+                    </p>
+                  )}
               </div>
             </div>
           </CardContent>
@@ -198,10 +207,9 @@ const ICD11Search: React.FC<ICD11SearchProps> = ({
 
       {/* Help text */}
       <p className="text-xs text-muted-foreground">
-        Start typing to search the WHO ICD-11 database for diseases, conditions, and medical terms.
+        Start typing to search the WHO ICD-11 database for diseases, conditions,
+        and medical terms.
       </p>
-
-
     </div>
   );
 };

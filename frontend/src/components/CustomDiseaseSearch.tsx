@@ -1,11 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, CheckCircle, Loader2, X, Stethoscope, Activity, Plus } from "lucide-react";
+import {
+  Search,
+  CheckCircle,
+  Loader2,
+  X,
+  Stethoscope,
+  Activity,
+  Plus,
+} from "lucide-react";
 import { diseaseAPI, CustomDisease } from "@/services/customDiseaseAPI";
 
 interface CustomDiseaseSearchProps {
@@ -21,19 +29,23 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
   placeholder = "Search diseases, conditions, or symptoms...",
   label = "Disease/Condition Search",
   value = "",
-  className = ""
+  className = "",
 }) => {
   const [searchQuery, setSearchQuery] = useState(value);
   const [searchResults, setSearchResults] = useState<CustomDisease[]>([]);
-  const [selectedDisease, setSelectedDisease] = useState<CustomDisease | null>(null);
+  const [selectedDisease, setSelectedDisease] = useState<CustomDisease | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
-  const [searchMode, setSearchMode] = useState<'general' | 'symptoms'>('general');
+  const [searchMode, setSearchMode] = useState<"general" | "symptoms">(
+    "general"
+  );
   const [symptoms, setSymptoms] = useState<string[]>([]);
-  const [currentSymptom, setCurrentSymptom] = useState('');
+  const [currentSymptom, setCurrentSymptom] = useState("");
   const [allSymptoms] = useState<string[]>(diseaseAPI.getAllSymptoms());
-  
+
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -53,7 +65,7 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
       setIsOpen(results.length > 0);
       setHighlightedIndex(-1);
     } catch (error) {
-      console.error('Search error:', error);
+      console.error("Search error:", error);
       setSearchResults([]);
       setIsOpen(false);
     } finally {
@@ -88,7 +100,7 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
     setSearchQuery(disease.name);
     setIsOpen(false);
     setSearchResults([]);
-    
+
     if (onSelect) {
       onSelect(disease);
     }
@@ -108,8 +120,8 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
     if (currentSymptom.trim() && !symptoms.includes(currentSymptom.trim())) {
       const newSymptoms = [...symptoms, currentSymptom.trim()];
       setSymptoms(newSymptoms);
-      setCurrentSymptom('');
-      
+      setCurrentSymptom("");
+
       // Automatically search when symptoms are added
       if (newSymptoms.length > 0) {
         searchBySymptoms(newSymptoms);
@@ -119,9 +131,9 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
 
   // Remove symptom from the list
   const removeSymptom = (symptomToRemove: string) => {
-    const newSymptoms = symptoms.filter(s => s !== symptomToRemove);
+    const newSymptoms = symptoms.filter((s) => s !== symptomToRemove);
     setSymptoms(newSymptoms);
-    
+
     if (newSymptoms.length > 0) {
       searchBySymptoms(newSymptoms);
     } else {
@@ -145,7 +157,7 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
       setIsOpen(results.length > 0);
       setHighlightedIndex(-1);
     } catch (error) {
-      console.error('Symptom search error:', error);
+      console.error("Symptom search error:", error);
       setSearchResults([]);
       setIsOpen(false);
     } finally {
@@ -155,7 +167,7 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
 
   // Handle Enter key for adding symptoms
   const handleSymptomKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
       addSymptom();
     }
@@ -166,25 +178,25 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
     if (!isOpen || searchResults.length === 0) return;
 
     switch (e.key) {
-      case 'ArrowDown':
+      case "ArrowDown":
         e.preventDefault();
-        setHighlightedIndex(prev => 
+        setHighlightedIndex((prev) =>
           prev < searchResults.length - 1 ? prev + 1 : 0
         );
         break;
-      case 'ArrowUp':
+      case "ArrowUp":
         e.preventDefault();
-        setHighlightedIndex(prev => 
+        setHighlightedIndex((prev) =>
           prev > 0 ? prev - 1 : searchResults.length - 1
         );
         break;
-      case 'Enter':
+      case "Enter":
         e.preventDefault();
         if (highlightedIndex >= 0 && highlightedIndex < searchResults.length) {
           handleDiseaseSelect(searchResults[highlightedIndex]);
         }
         break;
-      case 'Escape':
+      case "Escape":
         setIsOpen(false);
         setHighlightedIndex(-1);
         break;
@@ -194,14 +206,17 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (resultsRef.current && !resultsRef.current.contains(event.target as Node)) {
+      if (
+        resultsRef.current &&
+        !resultsRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
         setHighlightedIndex(-1);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Cleanup timeout on unmount
@@ -215,10 +230,8 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
 
   return (
     <div className={`space-y-4 ${className}`}>
-      <Label className="text-sm font-medium text-foreground">
-        {label}
-      </Label>
-      
+      <Label className="text-sm font-medium text-foreground">{label}</Label>
+
       <Tabs defaultValue="general" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="general" className="flex items-center gap-2">
@@ -290,7 +303,9 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
 
             {symptoms.length > 0 && (
               <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">Selected Symptoms:</Label>
+                <Label className="text-xs text-muted-foreground">
+                  Selected Symptoms:
+                </Label>
                 <div className="flex flex-wrap gap-2">
                   {symptoms.map((symptom, index) => (
                     <Badge
@@ -313,7 +328,7 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
       {/* Search Results Dropdown */}
       <div className="relative">
         {isOpen && searchResults.length > 0 && (
-          <Card 
+          <Card
             ref={resultsRef}
             className="absolute top-full left-0 right-0 mt-1 z-50 border-2 border-govt-blue/20 shadow-lg max-h-80 overflow-y-auto"
           >
@@ -322,9 +337,9 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
                 <div
                   key={disease.id}
                   className={`p-3 cursor-pointer transition-colors border-b last:border-b-0 ${
-                    index === highlightedIndex 
-                      ? 'bg-govt-blue/10 border-govt-blue/20' 
-                      : 'hover:bg-muted/50'
+                    index === highlightedIndex
+                      ? "bg-govt-blue/10 border-govt-blue/20"
+                      : "hover:bg-muted/50"
                   }`}
                   onClick={() => handleDiseaseSelect(disease)}
                   onMouseEnter={() => setHighlightedIndex(index)}
@@ -332,7 +347,10 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-grow space-y-1">
                       <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="bg-govt-blue/10 text-govt-blue border-govt-blue/30 text-xs">
+                        <Badge
+                          variant="outline"
+                          className="bg-govt-blue/10 text-govt-blue border-govt-blue/30 text-xs"
+                        >
                           {disease.icdCode}
                         </Badge>
                         <span className="font-medium text-sm text-foreground">
@@ -340,11 +358,16 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
                         </span>
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        <span className="font-medium">Namaste:</span> {disease.namaste}
+                        <span className="font-medium">Namaste:</span>{" "}
+                        {disease.namaste}
                       </p>
                       <div className="flex flex-wrap gap-1">
                         {disease.symptoms.slice(0, 3).map((symptom, idx) => (
-                          <Badge key={idx} variant="secondary" className="text-xs">
+                          <Badge
+                            key={idx}
+                            variant="secondary"
+                            className="text-xs"
+                          >
                             {symptom}
                           </Badge>
                         ))}
@@ -364,18 +387,21 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
         )}
 
         {/* No Results Message */}
-        {isOpen && searchResults.length === 0 && searchQuery.length > 0 && !isLoading && (
-          <Card className="absolute top-full left-0 right-0 mt-1 z-50 border-2 border-muted">
-            <CardContent className="p-4 text-center">
-              <p className="text-sm text-muted-foreground">
-                No diseases found for "{searchQuery}"
-              </p>
-              <p className="text-xs text-muted-foreground mt-1">
-                Try searching with different terms or symptoms
-              </p>
-            </CardContent>
-          </Card>
-        )}
+        {isOpen &&
+          searchResults.length === 0 &&
+          searchQuery.length > 0 &&
+          !isLoading && (
+            <Card className="absolute top-full left-0 right-0 mt-1 z-50 border-2 border-muted">
+              <CardContent className="p-4 text-center">
+                <p className="text-sm text-muted-foreground">
+                  No diseases found for "{searchQuery}"
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Try searching with different terms or symptoms
+                </p>
+              </CardContent>
+            </Card>
+          )}
       </div>
 
       {/* Selected Disease Display */}
@@ -386,7 +412,10 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
               <CheckCircle className="h-5 w-5 text-govt-green mt-0.5 flex-shrink-0" />
               <div className="space-y-2 flex-grow">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <Badge variant="outline" className="bg-govt-blue/10 text-govt-blue border-govt-blue/30">
+                  <Badge
+                    variant="outline"
+                    className="bg-govt-blue/10 text-govt-blue border-govt-blue/30"
+                  >
                     {selectedDisease.icdCode}
                   </Badge>
                   <span className="font-medium text-foreground">
@@ -394,13 +423,20 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
                   </span>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  <span className="font-medium">Namaste Name:</span> {selectedDisease.namaste}
+                  <span className="font-medium">Namaste Name:</span>{" "}
+                  {selectedDisease.namaste}
                 </p>
                 <div className="space-y-1">
-                  <p className="text-sm font-medium text-foreground">Symptoms:</p>
+                  <p className="text-sm font-medium text-foreground">
+                    Symptoms:
+                  </p>
                   <div className="flex flex-wrap gap-1">
                     {selectedDisease.symptoms.map((symptom, index) => (
-                      <Badge key={index} variant="secondary" className="text-xs">
+                      <Badge
+                        key={index}
+                        variant="secondary"
+                        className="text-xs"
+                      >
                         {symptom}
                       </Badge>
                     ))}
@@ -414,7 +450,8 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
 
       {/* Help Text */}
       <p className="text-xs text-muted-foreground">
-        Search from our curated database of diseases with ICD-11 codes and Ayurvedic names.
+        Search from our curated database of diseases with ICD-11 codes and
+        Ayurvedic names.
       </p>
     </div>
   );
