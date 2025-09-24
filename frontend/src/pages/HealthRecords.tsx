@@ -45,7 +45,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { DiseaseAutocomplete } from "@/components/DiseaseAutocomplete";
+import CustomDiseaseSearch from "@/components/CustomDiseaseSearch";
+import { CustomDisease } from "@/services/customDiseaseAPI";
 import Logo from "@/components/Logo";
 import {
   Plus,
@@ -705,19 +706,20 @@ const HealthRecords = () => {
                 {/* Disease Section */}
                 <div className="grid grid-cols-1 gap-4">
                   <div>
-                    <DiseaseAutocomplete
-                      onDiseaseSelect={(disease) => {
+                    <CustomDiseaseSearch
+                      onSelect={(disease: CustomDisease) => {
                         setFormData({
                           ...formData,
-                          icd11Code: disease.code,
-                          icd11Title: disease.title,
-                          diagnosis: disease.title,
-                          namasteName: disease.namaste || "",
-                          symptoms: disease.symptoms || formData.symptoms,
+                          icd11Code: disease.icdCode,
+                          icd11Title: disease.name,
+                          diagnosis: disease.name,
+                          namasteName: disease.namaste,
+                          symptoms: disease.symptoms.join(", "),
                         });
                       }}
-                      label="Disease/Condition"
-                      placeholder="Type disease name or symptoms..."
+                      label="Disease/Condition Search"
+                      placeholder="Search diseases, conditions, symptoms, or Ayurvedic names..."
+                      value={formData.icd11Title}
                     />
                   </div>
                   <div>

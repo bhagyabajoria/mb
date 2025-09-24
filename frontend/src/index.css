@@ -239,3 +239,48 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* WHO ICD-11 ECT Styling Integration */
+.ctw-window {
+  border-radius: 0.5rem;
+  border: 2px solid hsl(var(--border));
+  background: hsl(var(--card));
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  margin-top: 0.5rem;
+  z-index: 1000;
+}
+
+.ctw-window .ctw-item {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.ctw-window .ctw-item:hover {
+  background-color: hsl(var(--accent));
+}
+
+.ctw-window .ctw-item:last-child {
+  border-bottom: none;
+}
+
+.ctw-window .ctw-code {
+  color: hsl(var(--govt-blue));
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.ctw-window .ctw-title {
+  color: hsl(var(--foreground));
+  font-weight: 500;
+  font-size: 0.875rem;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.ctw-window .ctw-description {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
