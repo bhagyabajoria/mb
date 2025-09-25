@@ -653,7 +653,9 @@ const HealthRecords = () => {
               <span className="hidden sm:inline md:hidden lg:inline">
                 {t("records.addSample")}
               </span>
-              <span className="sm:hidden md:inline lg:hidden">Sample</span>
+              <span className="sm:hidden md:inline lg:hidden">
+                {t("records.addSampleShort")}
+              </span>
             </Button>
 
             <Button
@@ -665,7 +667,9 @@ const HealthRecords = () => {
               <span className="hidden sm:inline md:hidden lg:inline">
                 {t("records.exportExcel")}
               </span>
-              <span className="sm:hidden md:inline lg:hidden">Export</span>
+              <span className="sm:hidden md:inline lg:hidden">
+                {t("records.exportShort")}
+              </span>
             </Button>
 
             <Button
@@ -676,7 +680,9 @@ const HealthRecords = () => {
               <span className="hidden sm:inline md:hidden lg:inline">
                 {t("records.addNew")}
               </span>
-              <span className="sm:hidden md:inline lg:hidden">Add</span>
+              <span className="sm:hidden md:inline lg:hidden">
+                {t("records.addNewShort")}
+              </span>
             </Button>
 
             <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
