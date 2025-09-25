@@ -48,6 +48,8 @@ import {
 import CustomDiseaseSearch from "@/components/CustomDiseaseSearch";
 import { CustomDisease } from "@/services/customDiseaseAPI";
 import Logo from "@/components/Logo";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import {
   Plus,
   FileText,
@@ -101,6 +103,7 @@ interface NewRecordForm {
 
 const HealthRecords = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [records, setRecords] = useState<HealthRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -585,15 +588,16 @@ const HealthRecords = () => {
           </div>
           <div className="space-y-1 sm:space-y-2">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-              Health Records
+              {t("records.title")}
             </h1>
             <p className="text-sm sm:text-base text-gray-600">
-              Manage and organize your medical history
+              {t("nav.healthRecords")}
             </p>
           </div>
         </div>
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+          <LanguageSwitcher variant="compact" />
           <Button
             variant="outline"
             className="flex items-center gap-2"
@@ -617,19 +621,19 @@ const HealthRecords = () => {
             onClick={() => setIsDialogOpen(true)}
           >
             <Plus className="h-4 w-4" />
-            Add New Record
+            {t("records.addNew")}
           </Button>
 
           <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto mx-4 sm:mx-auto">
+            <DialogContent className="max-w-[95vw] sm:max-w-xl md:max-w-2xl lg:max-w-3xl max-h-[90vh] overflow-y-auto mx-2 sm:mx-4">
               <DialogHeader>
-                <DialogTitle className="text-lg sm:text-xl">
+                <DialogTitle className="text-base sm:text-lg md:text-xl">
                   {editingRecordId
-                    ? "Edit Health Record"
-                    : "Create New Health Record"}
+                    ? t("records.editRecord")
+                    : t("records.createNewRecord")}
                 </DialogTitle>
-                <DialogDescription className="text-sm sm:text-base">
-                  Add a new health record to your medical history
+                <DialogDescription className="text-xs sm:text-sm md:text-base">
+                  {t("records.dialogDescription")}
                 </DialogDescription>
               </DialogHeader>
 
@@ -640,7 +644,7 @@ const HealthRecords = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="recordType" className="text-sm font-medium">
-                      Record Type
+                      {t("records.recordType")}
                     </Label>
                     <Select
                       value={formData.recordType}
@@ -649,7 +653,9 @@ const HealthRecords = () => {
                       }
                     >
                       <SelectTrigger className="h-10 sm:h-11">
-                        <SelectValue placeholder="Select record type" />
+                        <SelectValue
+                          placeholder={t("records.selectRecordType")}
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         {recordTypes.map((type) => (
@@ -665,7 +671,7 @@ const HealthRecords = () => {
 
                   <div>
                     <Label htmlFor="severity" className="text-sm font-medium">
-                      Severity
+                      {t("records.severity")}
                     </Label>
                     <Select
                       value={formData.severity}
@@ -674,12 +680,20 @@ const HealthRecords = () => {
                       }
                     >
                       <SelectTrigger className="h-10 sm:h-11">
-                        <SelectValue placeholder="Select severity" />
+                        <SelectValue
+                          placeholder={t("records.selectSeverity")}
+                        />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="mild">Mild</SelectItem>
-                        <SelectItem value="moderate">Moderate</SelectItem>
-                        <SelectItem value="severe">Severe</SelectItem>
+                        <SelectItem value="mild">
+                          {t("records.severityMild")}
+                        </SelectItem>
+                        <SelectItem value="moderate">
+                          {t("records.severityModerate")}
+                        </SelectItem>
+                        <SelectItem value="severe">
+                          {t("records.severitySevere")}
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -687,7 +701,7 @@ const HealthRecords = () => {
 
                 <div>
                   <Label htmlFor="title" className="text-sm font-medium">
-                    Patient's Name
+                    {t("records.patientName")}
                   </Label>
                   <Input
                     id="title"
@@ -695,7 +709,7 @@ const HealthRecords = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, title: e.target.value })
                     }
-                    placeholder="Enter patient's name"
+                    placeholder={t("records.patientNamePlaceholder")}
                     className="h-10 sm:h-11"
                     required
                   />
@@ -717,8 +731,8 @@ const HealthRecords = () => {
                           symptoms: disease.symptoms.join(", "),
                         });
                       }}
-                      label="Disease/Condition Search"
-                      placeholder="Search diseases, conditions, symptoms, or Ayurvedic names..."
+                      label={t("records.diseaseSearchLabel")}
+                      placeholder={t("records.diseaseSearchPlaceholder")}
                       value={formData.icd11Title}
                     />
                   </div>
@@ -727,7 +741,7 @@ const HealthRecords = () => {
                       htmlFor="namasteName"
                       className="text-sm font-medium"
                     >
-                      Namaste Name
+                      {t("records.namasteName")}
                     </Label>
                     <Input
                       id="namasteName"
@@ -738,7 +752,7 @@ const HealthRecords = () => {
                           namasteName: e.target.value,
                         })
                       }
-                      placeholder="Namaste name (e.g., chaechak, Madhumeha)"
+                      placeholder={t("records.namasteNamePlaceholder")}
                       className="h-10 sm:h-11"
                     />
                   </div>
@@ -748,7 +762,7 @@ const HealthRecords = () => {
                         htmlFor="icd11Code"
                         className="text-sm font-medium"
                       >
-                        ICD-11 Code
+                        {t("records.icd11Code")}
                       </Label>
                       <Input
                         id="icd11Code"
@@ -759,7 +773,7 @@ const HealthRecords = () => {
                             icd11Code: e.target.value,
                           })
                         }
-                        placeholder="e.g., BA00"
+                        placeholder={t("records.icd11CodePlaceholder")}
                         className="h-10 sm:h-11"
                       />
                     </div>
@@ -768,7 +782,7 @@ const HealthRecords = () => {
                         htmlFor="icd11Title"
                         className="text-sm font-medium"
                       >
-                        ICD-11 Title
+                        {t("records.icd11Title")}
                       </Label>
                       <Input
                         id="icd11Title"
@@ -779,7 +793,7 @@ const HealthRecords = () => {
                             icd11Title: e.target.value,
                           })
                         }
-                        placeholder="ICD-11 condition title"
+                        placeholder={t("records.icd11TitlePlaceholder")}
                         className="h-10 sm:h-11"
                       />
                     </div>
@@ -788,7 +802,7 @@ const HealthRecords = () => {
 
                 <div>
                   <Label htmlFor="diagnosis" className="text-sm font-medium">
-                    Diagnosis
+                    {t("records.diagnosis")}
                   </Label>
                   <Textarea
                     id="diagnosis"
@@ -796,7 +810,7 @@ const HealthRecords = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, diagnosis: e.target.value })
                     }
-                    placeholder="Medical diagnosis"
+                    placeholder={t("records.diagnosisPlaceholder")}
                     rows={2}
                     className="min-h-[60px] sm:min-h-[80px] resize-none"
                   />
@@ -804,7 +818,7 @@ const HealthRecords = () => {
 
                 <div>
                   <Label htmlFor="symptoms" className="text-sm font-medium">
-                    Symptoms
+                    {t("records.symptoms")}
                   </Label>
                   <Input
                     id="symptoms"
@@ -812,7 +826,7 @@ const HealthRecords = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, symptoms: e.target.value })
                     }
-                    placeholder="Comma-separated symptoms"
+                    placeholder={t("records.symptomsPlaceholder")}
                     className="h-10 sm:h-11"
                   />
                 </div>
@@ -820,7 +834,7 @@ const HealthRecords = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="doctorName" className="text-sm font-medium">
-                      Doctor Name
+                      {t("records.doctorName")}
                     </Label>
                     <Input
                       id="doctorName"
@@ -828,7 +842,7 @@ const HealthRecords = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, doctorName: e.target.value })
                       }
-                      placeholder="Dr. John Smith"
+                      placeholder={t("records.doctorNamePlaceholder")}
                       className="h-10 sm:h-11"
                     />
                   </div>
@@ -838,7 +852,7 @@ const HealthRecords = () => {
                       htmlFor="hospitalName"
                       className="text-sm font-medium"
                     >
-                      Hospital/Clinic
+                      {t("records.hospitalClinic")}
                     </Label>
                     <Input
                       id="hospitalName"
@@ -849,7 +863,7 @@ const HealthRecords = () => {
                           hospitalName: e.target.value,
                         })
                       }
-                      placeholder="General Hospital"
+                      placeholder={t("records.hospitalClinicPlaceholder")}
                       className="h-10 sm:h-11"
                     />
                   </div>
@@ -857,7 +871,7 @@ const HealthRecords = () => {
 
                 <div>
                   <Label htmlFor="visitDate" className="text-sm font-medium">
-                    Visit Date
+                    {t("records.visitDate")}
                   </Label>
                   <Input
                     id="visitDate"
@@ -877,13 +891,15 @@ const HealthRecords = () => {
                     onClick={() => setIsDialogOpen(false)}
                     className="w-full sm:w-auto text-sm sm:text-base h-10 sm:h-11"
                   >
-                    Cancel
+                    {t("records.cancel")}
                   </Button>
                   <Button
                     type="submit"
                     className="w-full sm:w-auto text-sm sm:text-base h-10 sm:h-11"
                   >
-                    {editingRecordId ? "Update Record" : "Create Record"}
+                    {editingRecordId
+                      ? t("records.updateRecord")
+                      : t("records.createRecord")}
                   </Button>
                 </div>
               </form>

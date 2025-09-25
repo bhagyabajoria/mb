@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import {
   Card,
   CardContent,
@@ -76,6 +78,7 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [userEmail, setUserEmail] = useState<string>("");
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   useEffect(() => {
     fetchDashboardData();
@@ -242,7 +245,7 @@ const Dashboard = () => {
         fetchDashboardData();
 
         // Show success message
-        toast.success("Health record deleted successfully");
+        toast.success(t("dashboard.recordDeleted"));
       }
     } catch (error) {
       console.error("Failed to delete record:", error);
@@ -271,7 +274,7 @@ const Dashboard = () => {
   const handleExportToExcel = () => {
     try {
       if (allRecords.length === 0) {
-        toast.error("No records to export");
+        toast.error(t("dashboard.noRecordsToExport"));
         return;
       }
 
@@ -280,16 +283,17 @@ const Dashboard = () => {
         "Patient Name": record.title,
         "Record Type": record.record_type.replace("_", " ").toUpperCase(),
         Description: record.description,
-        "ICD-11 Code": record.icd11_code || "",
-        "ICD-11 Title": record.icd11_title || "",
+        [t("dashboard.export.icdCode")]: record.icd11_code || "",
+        [t("dashboard.export.icdTitle")]: record.icd11_title || "",
         Diagnosis: record.diagnosis || "",
         Symptoms: record.symptoms ? record.symptoms.join(", ") : "",
-        "Hindi Name": record.namaste_name || "",
-        "Doctor Name": record.doctor_name || "",
-        "Hospital Name": record.hospital_name || "",
-        "Visit Date": record.visit_date || "",
+        [t("dashboard.export.hindiName")]: record.namaste_name || "",
+        [t("dashboard.export.doctorName")]: record.doctor_name || "",
+        [t("dashboard.export.hospitalName")]: record.hospital_name || "",
+        [t("dashboard.export.visitDate")]: record.visit_date || "",
         Severity: record.severity.toUpperCase(),
-        "Verification Status": record.verification_status.toUpperCase(),
+        [t("dashboard.export.verificationStatus")]:
+          record.verification_status.toUpperCase(),
         "Created Date": new Date(record.created_at).toLocaleDateString(),
         "Last Updated": new Date(record.updated_at).toLocaleDateString(),
       }));
@@ -353,26 +357,27 @@ const Dashboard = () => {
           <Logo size="md" showText={true} to="/" />
           <div className="space-y-1 sm:space-y-2">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-              Health Dashboard
+              {t("dashboard.title")}
             </h1>
             <p className="text-sm sm:text-base text-gray-600">
-              Comprehensive view of your health records and data
+              {t("nav.healthRecords")}
             </p>
             {userEmail && (
               <p className="text-xs sm:text-sm text-gray-500">
-                Welcome back, {userEmail}
+                {t("dashboard.welcome")}, {userEmail}
               </p>
             )}
           </div>
         </div>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+          <LanguageSwitcher variant="compact" />
           <Button
             className="flex items-center justify-center gap-2 w-full sm:w-auto text-sm"
             onClick={handleExportToExcel}
           >
             <Download className="h-4 w-4" />
-            <span className="hidden sm:inline">Export Data</span>
-            <span className="sm:hidden">Export</span>
+            <span className="hidden sm:inline">{t("records.export")}</span>
+            <span className="sm:hidden">{t("records.export")}</span>
           </Button>
           <Button
             variant="outline"
@@ -380,7 +385,7 @@ const Dashboard = () => {
             onClick={handleLogout}
           >
             <LogOut className="h-4 w-4" />
-            Logout
+            {t("dashboard.logout")}
           </Button>
         </div>
       </div>
@@ -389,13 +394,16 @@ const Dashboard = () => {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Records</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("dashboard.totalRecords")}
+            </CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats?.totalRecords || 0}</div>
             <p className="text-xs text-muted-foreground">
-              +{stats?.recentRecords || 0} this month
+              {t("dashboard.thisMonthPrefix")}
+              {stats?.recentRecords || 0} {t("dashboard.thisMonthSuffix")}
             </p>
           </CardContent>
         </Card>
@@ -403,7 +411,7 @@ const Dashboard = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Verified Records
+              {t("dashboard.verifiedRecords")}
             </CardTitle>
             <CheckCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -412,7 +420,7 @@ const Dashboard = () => {
               {stats?.verifiedRecords || 0}
             </div>
             <p className="text-xs text-muted-foreground">
-              {getVerificationRate()}% verification rate
+              {getVerificationRate()}% {t("dashboard.verificationRate")}
             </p>
           </CardContent>
         </Card>
@@ -420,7 +428,7 @@ const Dashboard = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Active Conditions
+              {t("dashboard.activeConditions")}
             </CardTitle>
             <Heart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -428,14 +436,16 @@ const Dashboard = () => {
             <div className="text-2xl font-bold">
               {stats?.activeConditions || 0}
             </div>
-            <p className="text-xs text-muted-foreground">Being monitored</p>
+            <p className="text-xs text-muted-foreground">
+              {t("dashboard.beingMonitored")}
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Active Medications
+              {t("dashboard.activeMedications")}
             </CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -444,14 +454,16 @@ const Dashboard = () => {
               {stats?.activeMedications || 0}
             </div>
             <p className="text-xs text-muted-foreground">
-              Current prescriptions
+              {t("dashboard.currentPrescriptions")}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Health Score</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("dashboard.healthScore")}
+            </CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -477,25 +489,25 @@ const Dashboard = () => {
             value="overview"
             className="text-xs sm:text-sm px-2 sm:px-3 py-2 data-[state=active]:bg-govt-blue data-[state=active]:text-white"
           >
-            Overview
+            {t("dashboard.tabs.overview")}
           </TabsTrigger>
           <TabsTrigger
             value="records"
             className="text-xs sm:text-sm px-2 sm:px-3 py-2 data-[state=active]:bg-govt-blue data-[state=active]:text-white"
           >
-            Records
+            {t("dashboard.tabs.records")}
           </TabsTrigger>
           <TabsTrigger
             value="analytics"
             className="text-xs sm:text-sm px-2 sm:px-3 py-2 data-[state=active]:bg-govt-blue data-[state=active]:text-white"
           >
-            Analytics
+            {t("dashboard.tabs.analytics")}
           </TabsTrigger>
           <TabsTrigger
             value="verification"
             className="text-xs sm:text-sm px-2 sm:px-3 py-2 data-[state=active]:bg-govt-blue data-[state=active]:text-white"
           >
-            Verify
+            {t("dashboard.tabs.verify")}
           </TabsTrigger>
         </TabsList>
 
@@ -504,9 +516,9 @@ const Dashboard = () => {
             {/* Recent Records */}
             <Card>
               <CardHeader>
-                <CardTitle>Recent Health Records</CardTitle>
+                <CardTitle>{t("dashboard.recentHealthRecords")}</CardTitle>
                 <CardDescription>
-                  Your latest health record entries
+                  {t("dashboard.latestEntries")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -607,15 +619,14 @@ const Dashboard = () => {
                             id: Date.now(),
                             title: "John Doe",
                             record_type: "consultation",
-                            description:
-                              "This is a sample health record for demonstration purposes.",
+                            description: t("dashboard.sample.description"),
                             icd11_code: "8A00",
                             icd11_title: "Primary headache disorders",
                             diagnosis: "Tension-type headache",
                             symptoms: ["headache", "stress"],
                             namaste_name: "स्वास्थ्य रिकॉर्ड (Health Record)",
-                            doctor_name: "Dr. Sample Physician",
-                            hospital_name: "Sample Medical Center",
+                            doctor_name: t("dashboard.sample.doctorName"),
+                            hospital_name: t("dashboard.sample.hospitalName"),
                             visit_date: new Date().toISOString().split("T")[0],
                             severity: "mild",
                             verification_status: "pending",
@@ -643,21 +654,19 @@ const Dashboard = () => {
                             // Refresh dashboard data
                             fetchDashboardData();
 
-                            toast.success(
-                              "Sample health record added successfully"
-                            );
+                            toast.success(t("dashboard.sample.successMessage"));
                           } catch (error) {
                             console.error(
                               "Failed to create sample record:",
                               error
                             );
-                            toast.error("Failed to create sample record");
+                            toast.error(t("dashboard.sample.errorMessage"));
                           }
                         }}
                         className="flex items-center gap-2"
                       >
                         <Activity className="h-4 w-4" />
-                        Quick Sample
+                        {t("dashboard.sample.quickSample")}
                       </Button>
                     </div>
                   </div>
@@ -670,7 +679,7 @@ const Dashboard = () => {
                       onClick={() => navigate("/health-records")}
                     >
                       <FileText className="h-4 w-4" />
-                      View All Records & Add New
+                      {t("dashboard.viewAllRecordsAndAdd")}
                     </Button>
                   </div>
                 )}
@@ -740,7 +749,7 @@ const Dashboard = () => {
                     size="sm"
                   >
                     <FileText className="h-4 w-4" />
-                    View All
+                    {t("dashboard.viewAll")}
                   </Button>
                 </div>
               </div>
@@ -889,7 +898,7 @@ const Dashboard = () => {
                       className="flex items-center gap-2"
                     >
                       <FileText className="h-4 w-4" />
-                      View All Records
+                      {t("dashboard.viewAllRecords")}
                     </Button>
                   </div>
                 </div>

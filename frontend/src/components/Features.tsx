@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   FolderOpen,
   Shield,
@@ -11,47 +12,43 @@ import {
 } from "lucide-react";
 
 const Features = () => {
+  const { t } = useLanguage();
+
   const features = [
     {
       icon: FolderOpen,
-      title: "Organize & Store",
-      description:
-        "Automatically organize documents by type, date, and medical category for easy retrieval.",
+      title: t("features.organizeStore.title"),
+      description: t("features.organizeStore.description"),
       color: "text-govt-green",
     },
     {
       icon: Shield,
-      title: "Verify Authenticity",
-      description:
-        "Advanced verification using NAMASTE and ICD-11 (TM2) technology ensures your documents are genuine and tamper-proof.",
+      title: t("features.verifyAuthenticity.title"),
+      description: t("features.verifyAuthenticity.description"),
       color: "text-govt-blue",
     },
     {
       icon: Search,
-      title: "Quick Search",
-      description:
-        "Find any document instantly using smart search with filters by date, type, or medical condition.",
+      title: t("features.quickSearch.title"),
+      description: t("features.quickSearch.description"),
       color: "text-govt-green",
     },
     {
       icon: Download,
-      title: "Quick Access",
-      description:
-        "Access and download your verified documents 24/7 from anywhere with internet connectivity.",
+      title: t("features.quickAccess.title"),
+      description: t("features.quickAccess.description"),
       color: "text-govt-blue",
     },
     {
       icon: Share2,
-      title: "Secure Sharing",
-      description:
-        "Share verified copies with doctors, hospitals, or insurance companies with just a few clicks.",
+      title: t("features.secureSharing.title"),
+      description: t("features.secureSharing.description"),
       color: "text-govt-green",
     },
     {
       icon: FileText,
-      title: "ICD-11 (TM2) Classification",
-      description:
-        "Documents are automatically classified using WHO's latest International Classification of Diseases.",
+      title: t("features.icd11Classification.title"),
+      description: t("features.icd11Classification.description"),
       color: "text-govt-blue",
     },
   ];
@@ -72,15 +69,13 @@ const Features = () => {
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="text-center space-y-4 sm:space-y-6 mb-12 sm:mb-16">
             <div className="inline-flex items-center bg-gradient-to-r from-[#1D0A69]/10 to-[#0D6EFD]/10 text-[#1D0A69] px-6 py-3 rounded-full text-sm font-semibold border border-[#1D0A69]/20 backdrop-blur-sm">
-              ⚡ Powerful Features
+              ⚡ {t("features.powerfulFeatures")}
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-[#1D0A69] to-[#0D6EFD] bg-clip-text text-transparent">
-              Our Services
+              {t("features.ourServices")}
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              A comprehensive digital platform for managing your health
-              documents with government-grade security and international
-              standards.
+              {t("features.servicesDescription")}
             </p>
           </div>{" "}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
@@ -118,26 +113,26 @@ const Features = () => {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-10 sm:mb-12">
             <div className="inline-flex items-center bg-gradient-to-r from-[#198754]/10 to-[#0D6EFD]/10 text-[#198754] px-6 py-3 rounded-full text-sm font-semibold border border-[#198754]/20 backdrop-blur-sm mb-6">
-              📄 Document Support
+              📄 {t("features.documentSupport")}
             </div>
             <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-[#1D0A69] to-[#198754] bg-clip-text text-transparent mb-4">
-              Supported Document Types
+              {t("features.supportedDocumentTypes")}
             </h3>
             <p className="text-base sm:text-lg text-gray-600">
-              Store and manage all types of health-related documents with ease
+              {t("features.documentTypesDescription")}
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {[
-              "Lab Reports & Test Results",
-              "Vaccination Certificates",
-              "Prescriptions & Medicine Lists",
-              "Medical Imaging (X-Ray, MRI, CT Scan)",
-              "Discharge Summaries",
-              "Insurance Documents",
-              "Medical Certificates",
-              "Health Check-up Reports",
+              t("features.documentTypes.labReports"),
+              t("features.documentTypes.vaccination"),
+              t("features.documentTypes.prescriptions"),
+              t("features.documentTypes.medicalImaging"),
+              t("features.documentTypes.dischargeSummaries"),
+              t("features.documentTypes.insurance"),
+              t("features.documentTypes.medicalCertificates"),
+              t("features.documentTypes.healthCheckups"),
             ].map((docType, index) => (
               <div
                 key={index}

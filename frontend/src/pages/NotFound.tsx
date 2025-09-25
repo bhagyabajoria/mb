@@ -3,9 +3,12 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Logo from "@/components/Logo";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Home, ArrowLeft } from "lucide-react";
 
 const NotFound = () => {
+  const { t } = useLanguage();
   const location = useLocation();
 
   useEffect(() => {
@@ -20,8 +23,9 @@ const NotFound = () => {
       <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg space-y-6 sm:space-y-8">
         {/* Header */}
         <div className="text-center space-y-3 sm:space-y-4">
-          <div className="flex justify-center">
+          <div className="flex justify-center items-center space-x-4">
             <Logo size="lg" showText={true} to="/" />
+            <LanguageSwitcher variant="compact" />
           </div>
         </div>
 
@@ -32,13 +36,13 @@ const NotFound = () => {
               404
             </CardTitle>
             <div className="text-lg sm:text-xl text-foreground font-semibold">
-              Page Not Found
+              {t("notFound.title")}
             </div>
           </CardHeader>
 
           <CardContent className="text-center space-y-4 sm:space-y-6 px-4 sm:px-6 pb-6">
             <p className="text-sm sm:text-base text-muted-foreground max-w-md mx-auto leading-relaxed">
-              The page you're looking for doesn't exist or may have been moved.
+              {t("notFound.message")}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
@@ -48,7 +52,7 @@ const NotFound = () => {
               >
                 <Link to="/">
                   <Home className="h-4 w-4" />
-                  Go to Home
+                  {t("notFound.goHome")}
                 </Link>
               </Button>
 
@@ -58,14 +62,14 @@ const NotFound = () => {
                 className="flex items-center gap-2 text-sm sm:text-base"
               >
                 <ArrowLeft className="h-4 w-4" />
-                Go Back
+                {t("notFound.goBack")}
               </Button>
             </div>
 
             {location.pathname && (
               <div className="pt-4 border-t border-border/50">
                 <p className="text-xs sm:text-sm text-muted-foreground">
-                  Requested path:{" "}
+                  {t("notFound.requestedPath")}{" "}
                   <code className="bg-muted px-2 py-1 rounded text-xs break-all">
                     {location.pathname}
                   </code>

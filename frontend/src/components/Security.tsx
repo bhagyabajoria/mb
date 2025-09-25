@@ -1,44 +1,41 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Shield, Lock, Eye, Server, Award, CheckCircle } from "lucide-react";
 
 const Security = () => {
+  const { t } = useLanguage();
+
   const securityFeatures = [
     {
       icon: Lock,
-      title: "256-bit Encryption",
-      description:
-        "Military-grade encryption protects your documents both in storage and transmission.",
+      title: t("security.encryption.title"),
+      description: t("security.encryption.description"),
     },
     {
       icon: Shield,
-      title: "Digital Signatures",
-      description:
-        "All documents are digitally signed and verified using government-approved certificates.",
+      title: t("security.digitalSignatures.title"),
+      description: t("security.digitalSignatures.description"),
     },
     {
       icon: Eye,
-      title: "Access Control",
-      description:
-        "You control who can view your documents with granular permission settings.",
+      title: t("security.accessControl.title"),
+      description: t("security.accessControl.description"),
     },
     {
       icon: Server,
-      title: "Secure Infrastructure",
-      description:
-        "Hosted on government-approved cloud infrastructure with 99.9% uptime.",
+      title: t("security.infrastructure.title"),
+      description: t("security.infrastructure.description"),
     },
     {
       icon: Award,
-      title: "Compliance Certified",
-      description:
-        "Compliant with Data Protection Act, HIPAA, and international healthcare standards.",
+      title: t("security.compliance.title"),
+      description: t("security.compliance.description"),
     },
     {
       icon: CheckCircle,
-      title: "Audit Trail",
-      description:
-        "Complete audit trail of who accessed your documents and when.",
+      title: t("security.auditTrail.title"),
+      description: t("security.auditTrail.description"),
     },
   ];
 
@@ -47,11 +44,10 @@ const Security = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center space-y-3 sm:space-y-4 mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
-            Security & Verification
+            {t("security.title")}
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed px-4 sm:px-0">
-            Your health documents are protected with government-grade security
-            measures and verified using advanced authentication technologies.
+            {t("security.description")}
           </p>
         </div>
 
@@ -88,10 +84,10 @@ const Security = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-foreground text-sm sm:text-base">
-                        Document Upload
+                        {t("security.verification.step1.title")}
                       </h3>
                       <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                        Upload your health document securely
+                        {t("security.verification.step1.description")}
                       </p>
                     </div>
                   </div>
@@ -102,10 +98,10 @@ const Security = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-foreground text-sm sm:text-base">
-                        Namaste TM2 Verification
+                        {t("security.verification.step2.title")}
                       </h3>
                       <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                        Advanced verification checks document authenticity
+                        {t("security.verification.step2.description")}
                       </p>
                     </div>
                   </div>
@@ -116,10 +112,10 @@ const Security = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-foreground text-sm sm:text-base">
-                        ICD-11 Classification
+                        {t("security.verification.step3.title")}
                       </h3>
                       <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                        Document is classified and organized automatically
+                        {t("security.verification.step3.description")}
                       </p>
                     </div>
                   </div>
@@ -130,10 +126,10 @@ const Security = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-foreground text-sm sm:text-base">
-                        Secure Storage
+                        {t("security.verification.step4.title")}
                       </h3>
                       <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                        Document stored in your encrypted digital vault
+                        {t("security.verification.step4.description")}
                       </p>
                     </div>
                   </div>
@@ -143,19 +139,17 @@ const Security = () => {
 
             <div className="bg-govt-blue/5 p-4 sm:p-6 rounded border border-govt-blue/20">
               <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2">
-                Why Verification Matters
+                {t("security.whyVerificationMatters.title")}
               </h3>
               <p className="text-xs sm:text-sm text-muted-foreground mb-4 leading-relaxed">
-                Document verification ensures that your health records are
-                genuine, tamper-proof, and legally acceptable for insurance
-                claims, medical consultations, and official procedures.
+                {t("security.whyVerificationMatters.description")}
               </p>
               <Button
                 variant="govt-outline"
                 size="sm"
                 className="text-xs sm:text-sm"
               >
-                Learn More About Verification
+                {t("security.learnMore")}
               </Button>
             </div>
           </div>

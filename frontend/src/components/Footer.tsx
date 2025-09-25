@@ -1,56 +1,58 @@
 import { FolderOpen, Mail, Phone, MapPin, ExternalLink } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer = () => {
+  const { t } = useLanguage();
   return (
     <footer className="bg-card border-t-2 border-govt-blue">
-      <div className="container mx-auto px-6 py-12">
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8">
+      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Brand */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-3">
+          <div className="space-y-3 sm:space-y-4">
+            <div className="flex items-center space-x-2 sm:space-x-3">
               <div className="flex items-center">
                 <img
                   src="/main.png"
                   alt="MediBridge Logo"
-                  className="h-10 w-10 object-contain rounded"
+                  className="h-8 w-8 sm:h-10 sm:w-10 object-contain rounded"
                 />
               </div>
               <div>
-                <div className="text-xl font-bold text-govt-blue">
+                <div className="text-lg sm:text-xl font-bold text-govt-blue">
                   MediBridge
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  Digital Health Documents
+                  {t("footer.tagline")}
                 </div>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              A Digital India initiative for secure health document storage and
-              management. Store, verify, and access your medical records with
-              government-grade security.
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              {t("footer.description")}
             </p>
-            <div className="space-y-2 text-xs">
+            <div className="space-y-1 sm:space-y-2 text-xs">
               <div className="flex items-center space-x-2 text-muted-foreground">
                 <Mail className="w-3 h-3" />
-                <span>support@MediBridge.gov.in</span>
+                <span className="text-xs">support@MediBridge.gov.in</span>
               </div>
               <div className="flex items-center space-x-2 text-muted-foreground">
                 <Phone className="w-3 h-3" />
-                <span>1800-123-HEALTH (43258)</span>
+                <span className="text-xs">1800-123-HEALTH (43258)</span>
               </div>
             </div>
           </div>
 
           {/* Services */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-foreground">Services</h3>
+            <h3 className="text-lg font-semibold text-foreground">
+              {t("footer.services.title")}
+            </h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <a
                   href="#"
                   className="text-muted-foreground hover:text-govt-blue transition-colors"
                 >
-                  Document Upload
+                  {t("footer.services.documentUpload")}
                 </a>
               </li>
               <li>
@@ -58,7 +60,7 @@ const Footer = () => {
                   href="#"
                   className="text-muted-foreground hover:text-govt-blue transition-colors"
                 >
-                  Document Verification
+                  {t("footer.services.documentVerification")}
                 </a>
               </li>
               <li>
@@ -66,7 +68,7 @@ const Footer = () => {
                   href="#"
                   className="text-muted-foreground hover:text-govt-blue transition-colors"
                 >
-                  Secure Sharing
+                  {t("footer.services.secureSharing")}
                 </a>
               </li>
               <li>
@@ -74,7 +76,7 @@ const Footer = () => {
                   href="#"
                   className="text-muted-foreground hover:text-govt-blue transition-colors"
                 >
-                  Mobile Access
+                  {t("footer.services.mobileAccess")}
                 </a>
               </li>
               <li>
@@ -82,7 +84,7 @@ const Footer = () => {
                   href="#"
                   className="text-muted-foreground hover:text-govt-blue transition-colors"
                 >
-                  API Integration
+                  {t("footer.services.apiIntegration")}
                 </a>
               </li>
             </ul>
@@ -90,14 +92,16 @@ const Footer = () => {
 
           {/* Support */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-foreground">Support</h3>
+            <h3 className="text-lg font-semibold text-foreground">
+              {t("footer.support.title")}
+            </h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <a
                   href="#"
                   className="text-muted-foreground hover:text-govt-blue transition-colors"
                 >
-                  Help Center
+                  {t("footer.support.helpCenter")}
                 </a>
               </li>
               <li>
@@ -105,7 +109,7 @@ const Footer = () => {
                   href="#"
                   className="text-muted-foreground hover:text-govt-blue transition-colors"
                 >
-                  User Guide
+                  {t("footer.support.userGuide")}
                 </a>
               </li>
               <li>
@@ -113,7 +117,7 @@ const Footer = () => {
                   href="#"
                   className="text-muted-foreground hover:text-govt-blue transition-colors"
                 >
-                  Video Tutorials
+                  {t("footer.support.videoTutorials")}
                 </a>
               </li>
               <li>
@@ -121,7 +125,7 @@ const Footer = () => {
                   href="#"
                   className="text-muted-foreground hover:text-govt-blue transition-colors"
                 >
-                  Contact Us
+                  {t("footer.support.contactUs")}
                 </a>
               </li>
             </ul>
@@ -130,7 +134,7 @@ const Footer = () => {
           {/* Government Links */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-foreground">
-              Government
+              {t("footer.government.title")}
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -138,7 +142,8 @@ const Footer = () => {
                   href="#"
                   className="text-muted-foreground hover:text-govt-blue transition-colors flex items-center"
                 >
-                  Digital India <ExternalLink className="w-3 h-3 ml-1" />
+                  {t("footer.government.digitalIndia")}{" "}
+                  <ExternalLink className="w-3 h-3 ml-1" />
                 </a>
               </li>
               <li>
@@ -146,7 +151,8 @@ const Footer = () => {
                   href="#"
                   className="text-muted-foreground hover:text-govt-blue transition-colors flex items-center"
                 >
-                  Ministry of Health <ExternalLink className="w-3 h-3 ml-1" />
+                  {t("footer.government.ministryOfHealth")}{" "}
+                  <ExternalLink className="w-3 h-3 ml-1" />
                 </a>
               </li>
               <li>
@@ -154,7 +160,7 @@ const Footer = () => {
                   href="#"
                   className="text-muted-foreground hover:text-govt-blue transition-colors"
                 >
-                  Privacy Policy
+                  {t("footer.government.privacyPolicy")}
                 </a>
               </li>
               <li>
@@ -162,7 +168,7 @@ const Footer = () => {
                   href="#"
                   className="text-muted-foreground hover:text-govt-blue transition-colors"
                 >
-                  Terms of Service
+                  {t("footer.government.termsOfService")}
                 </a>
               </li>
               <li>
@@ -170,7 +176,7 @@ const Footer = () => {
                   href="#"
                   className="text-muted-foreground hover:text-govt-blue transition-colors"
                 >
-                  RTI
+                  {t("footer.government.rti")}
                 </a>
               </li>
             </ul>
@@ -182,11 +188,10 @@ const Footer = () => {
           <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
             <div className="text-center lg:text-left">
               <p className="text-sm text-muted-foreground">
-                © 2024 Government of India. All rights reserved.
+                {t("footer.copyright")}
               </p>
               <p className="text-xs text-muted-foreground mt-1">
-                Website designed and developed by National Informatics Centre
-                (NIC)
+                {t("footer.developedBy")}
               </p>
             </div>
 
@@ -205,10 +210,15 @@ const Footer = () => {
 
           <div className="text-center mt-4 pt-4 border-t border-border">
             <p className="text-xs text-muted-foreground">
-              <span className="font-medium">Best viewed in:</span> Chrome 80+,
-              Firefox 78+, Safari 13+, Edge 80+ |
-              <span className="font-medium"> Screen Resolution:</span> 1024x768
-              and above
+              <span className="font-medium">
+                {t("footer.browserSupport.label")}
+              </span>{" "}
+              {t("footer.browserSupport.browsers")} |
+              <span className="font-medium">
+                {" "}
+                {t("footer.screenResolution.label")}
+              </span>{" "}
+              {t("footer.screenResolution.value")}
             </p>
           </div>
         </div>

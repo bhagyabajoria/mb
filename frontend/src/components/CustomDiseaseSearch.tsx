@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Search,
   CheckCircle,
@@ -26,11 +27,12 @@ interface CustomDiseaseSearchProps {
 
 const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
   onSelect,
-  placeholder = "Search diseases, conditions, or symptoms...",
-  label = "Disease/Condition Search",
+  placeholder,
+  label,
   value = "",
   className = "",
 }) => {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState(value);
   const [searchResults, setSearchResults] = useState<CustomDisease[]>([]);
   const [selectedDisease, setSelectedDisease] = useState<CustomDisease | null>(
@@ -230,17 +232,19 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
 
   return (
     <div className={`space-y-4 ${className}`}>
-      <Label className="text-sm font-medium text-foreground">{label}</Label>
+      <Label className="text-sm font-medium text-foreground">
+        {label || t("customDiseaseSearch.label")}
+      </Label>
 
       <Tabs defaultValue="general" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="general" className="flex items-center gap-2">
             <Search className="h-4 w-4" />
-            General Search
+            {t("customDiseaseSearch.generalSearch")}
           </TabsTrigger>
           <TabsTrigger value="symptoms" className="flex items-center gap-2">
             <Stethoscope className="h-4 w-4" />
-            Search by Symptoms
+            {t("customDiseaseSearch.searchBySymptoms")}
           </TabsTrigger>
         </TabsList>
 
@@ -253,7 +257,9 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
                 id="disease-search"
                 type="text"
                 className="pl-10 pr-10 border-2 border-muted focus:border-govt-blue transition-all duration-200"
-                placeholder={placeholder}
+                placeholder={
+                  placeholder || t("customDiseaseSearch.placeholder")
+                }
                 value={searchQuery}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
@@ -285,7 +291,7 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
                 <Input
                   type="text"
                   className="pl-10 border-2 border-muted focus:border-govt-blue transition-all duration-200"
-                  placeholder="Enter a symptom (e.g., fever, headache, cough)..."
+                  placeholder={t("customDiseaseSearch.symptomPlaceholder")}
                   value={currentSymptom}
                   onChange={(e) => setCurrentSymptom(e.target.value)}
                   onKeyDown={handleSymptomKeyDown}
@@ -304,7 +310,7 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
             {symptoms.length > 0 && (
               <div className="space-y-2">
                 <Label className="text-xs text-muted-foreground">
-                  Selected Symptoms:
+                  {t("customDiseaseSearch.selectedSymptoms")}
                 </Label>
                 <div className="flex flex-wrap gap-2">
                   {symptoms.map((symptom, index) => (
@@ -358,7 +364,9 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
                         </span>
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        <span className="font-medium">Namaste:</span>{" "}
+                        <span className="font-medium">
+                          {t("customDiseaseSearch.namaste")}:
+                        </span>{" "}
                         {disease.namaste}
                       </p>
                       <div className="flex flex-wrap gap-1">
@@ -373,7 +381,8 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
                         ))}
                         {disease.symptoms.length > 3 && (
                           <Badge variant="secondary" className="text-xs">
-                            +{disease.symptoms.length - 3} more
+                            +{disease.symptoms.length - 3}{" "}
+                            {t("customDiseaseSearch.more")}
                           </Badge>
                         )}
                       </div>
@@ -394,10 +403,13 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
             <Card className="absolute top-full left-0 right-0 mt-1 z-50 border-2 border-muted">
               <CardContent className="p-4 text-center">
                 <p className="text-sm text-muted-foreground">
-                  No diseases found for "{searchQuery}"
+                  {t("customDiseaseSearch.noResultsFound").replace(
+                    "{query}",
+                    searchQuery
+                  )}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Try searching with different terms or symptoms
+                  {t("customDiseaseSearch.tryDifferentTerms")}
                 </p>
               </CardContent>
             </Card>
@@ -423,12 +435,14 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
                   </span>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  <span className="font-medium">Namaste Name:</span>{" "}
+                  <span className="font-medium">
+                    {t("customDiseaseSearch.namasteName")}:
+                  </span>{" "}
                   {selectedDisease.namaste}
                 </p>
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-foreground">
-                    Symptoms:
+                    {t("customDiseaseSearch.symptoms")}:
                   </p>
                   <div className="flex flex-wrap gap-1">
                     {selectedDisease.symptoms.map((symptom, index) => (
@@ -450,8 +464,7 @@ const CustomDiseaseSearch: React.FC<CustomDiseaseSearchProps> = ({
 
       {/* Help Text */}
       <p className="text-xs text-muted-foreground">
-        Search from our curated database of diseases with ICD-11 codes and
-        Ayurvedic names.
+        {t("customDiseaseSearch.helpText")}
       </p>
     </div>
   );

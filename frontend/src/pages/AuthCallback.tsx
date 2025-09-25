@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Logo from "@/components/Logo";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { FolderOpen, Loader2, CheckCircle, XCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const AuthCallback = () => {
+  const { t } = useLanguage();
   const [status, setStatus] = useState<"loading" | "success" | "error">(
     "loading"
   );
@@ -23,7 +26,7 @@ const AuthCallback = () => {
         // Check for OAuth errors
         if (error) {
           setStatus("error");
-          setMessage(`Authentication failed: ${error}`);
+          setMessage(t("authCallback.errorPrefix") + `: ${error}`);
           return;
         }
 
@@ -35,7 +38,7 @@ const AuthCallback = () => {
           !state.startsWith(storedState.split("_")[0])
         ) {
           setStatus("error");
-          setMessage("Invalid state parameter. Possible CSRF attack.");
+          setMessage(t("authCallback.invalidState"));
           return;
         }
 
@@ -46,7 +49,7 @@ const AuthCallback = () => {
           // Here you would typically send the code to your backend
           // For now, we'll simulate a successful authentication
           setStatus("loading");
-          setMessage("Exchanging authorization code...");
+          setMessage(t("authCallback.exchangingCode"));
 
           // Simulate API call delay
           setTimeout(() => {
@@ -64,7 +67,9 @@ const AuthCallback = () => {
 
             setStatus("success");
             setMessage(
-              isSignup ? "Account created successfully!" : "Login successful!"
+              isSignup
+                ? t("authCallback.accountCreated")
+                : t("authCallback.loginSuccess")
             );
 
             // Redirect to dashboard after a short delay
@@ -99,11 +104,11 @@ const AuthCallback = () => {
           */
         } else {
           setStatus("error");
-          setMessage("No authorization code received.");
+          setMessage(t("authCallback.noCode"));
         }
       } catch (err) {
         setStatus("error");
-        setMessage("An error occurred during authentication.");
+        setMessage(t("authCallback.generalError"));
         console.error("Auth callback error:", err);
       }
     };
@@ -116,8 +121,9 @@ const AuthCallback = () => {
       <div className="w-full max-w-sm sm:max-w-md space-y-6 sm:space-y-8">
         {/* Header */}
         <div className="text-center space-y-3 sm:space-y-4">
-          <div className="flex justify-center">
+          <div className="flex justify-center items-center space-x-4">
             <Logo size="lg" showText={true} to="/" />
+            <LanguageSwitcher variant="compact" />
           </div>
         </div>
 
@@ -128,19 +134,23 @@ const AuthCallback = () => {
               {status === "loading" && (
                 <>
                   <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin text-govt-blue" />
-                  <span>Authenticating...</span>
+                  <span>{t("authCallback.authenticating")}</span>
                 </>
               )}
               {status === "success" && (
                 <>
                   <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-govt-green" />
-                  <span className="text-govt-green">Success!</span>
+                  <span className="text-govt-green">
+                    {t("authCallback.success")}
+                  </span>
                 </>
               )}
               {status === "error" && (
                 <>
                   <XCircle className="w-5 h-5 sm:w-6 sm:h-6 text-destructive" />
-                  <span className="text-destructive">Error</span>
+                  <span className="text-destructive">
+                    {t("authCallback.error")}
+                  </span>
                 </>
               )}
             </CardTitle>
@@ -152,7 +162,7 @@ const AuthCallback = () => {
 
             {status === "success" && (
               <p className="text-xs sm:text-sm text-muted-foreground">
-                Redirecting you to your dashboard...
+                {t("authCallback.redirecting")}
               </p>
             )}
 
@@ -162,14 +172,14 @@ const AuthCallback = () => {
                   to="/login"
                   className="inline-block bg-govt-blue text-white px-4 sm:px-6 py-2 sm:py-2 rounded text-sm sm:text-base hover:bg-govt-blue/90 transition-colors"
                 >
-                  Try Again
+                  {t("authCallback.tryAgain")}
                 </Link>
                 <br />
                 <Link
                   to="/"
                   className="text-xs sm:text-sm text-muted-foreground hover:text-govt-blue transition-colors"
                 >
-                  Back to Home
+                  {t("authCallback.backToHome")}
                 </Link>
               </div>
             )}

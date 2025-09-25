@@ -2,9 +2,12 @@ import { Button } from "@/components/ui/button";
 import { FolderOpen, Shield, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t } = useLanguage();
 
   // Smooth scroll handler with mobile offset
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -79,7 +82,7 @@ const Navigation = () => {
               onClick={handleNavClick}
               className="relative text-sm font-medium text-muted-foreground hover:text-govt-blue transition-all duration-300 group py-2"
             >
-              Services
+              {t("nav.services")}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-govt-blue to-govt-green transition-all duration-300 group-hover:w-full"></span>
             </a>
             <a
@@ -87,7 +90,7 @@ const Navigation = () => {
               onClick={handleNavClick}
               className="relative text-sm font-medium text-muted-foreground hover:text-govt-blue transition-all duration-300 group py-2"
             >
-              Documents
+              {t("nav.documents")}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-govt-blue to-govt-green transition-all duration-300 group-hover:w-full"></span>
             </a>
             <a
@@ -95,7 +98,7 @@ const Navigation = () => {
               onClick={handleNavClick}
               className="relative text-sm font-medium text-muted-foreground hover:text-govt-blue transition-all duration-300 group py-2"
             >
-              Verify
+              {t("nav.verify")}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-govt-blue to-govt-green transition-all duration-300 group-hover:w-full"></span>
             </a>
             <a
@@ -103,13 +106,16 @@ const Navigation = () => {
               onClick={handleNavClick}
               className="relative text-sm font-medium text-muted-foreground hover:text-govt-blue transition-all duration-300 group py-2"
             >
-              Help
+              {t("nav.help")}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-govt-blue to-govt-green transition-all duration-300 group-hover:w-full"></span>
             </a>
           </div>
 
           {/* Login Section */}
           <div className="flex items-center space-x-3 sm:space-x-4">
+            {/* Language Switcher */}
+            <LanguageSwitcher variant="compact" />
+
             <Link to="/login" className="hidden sm:block">
               <Button
                 variant="govt-outline"
@@ -117,7 +123,7 @@ const Navigation = () => {
                 className="text-xs sm:text-sm border-2 hover:bg-govt-blue/5 hover:border-govt-blue/70 transition-all duration-300 hover:shadow-md hover:shadow-govt-blue/20 group"
               >
                 <span className="group-hover:scale-105 transition-transform duration-300">
-                  Sign In
+                  {t("nav.signIn")}
                 </span>
               </Button>
             </Link>
@@ -127,7 +133,7 @@ const Navigation = () => {
                 size="sm"
                 className="text-xs px-2 border-2 hover:bg-govt-blue/5 transition-all duration-300"
               >
-                Login
+                {t("nav.signIn")}
               </Button>
             </Link>
             <button
@@ -154,8 +160,8 @@ const Navigation = () => {
             />
 
             {/* Mobile Menu */}
-            <div className="relative z-50 bg-gradient-to-br from-card via-card to-secondary/20 border-t border-govt-blue/20 shadow-2xl">
-              <div className="container mx-auto px-6 py-6">
+            <div className="absolute left-0 right-0 top-full z-50 bg-gradient-to-br from-card via-card to-secondary/20 border-t border-govt-blue/20 shadow-2xl">
+              <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
                 {/* Navigation Links */}
                 <div className="space-y-1 mb-6">
                   <a
@@ -164,7 +170,7 @@ const Navigation = () => {
                     className="flex items-center space-x-3 text-base font-medium text-foreground hover:text-govt-blue hover:bg-govt-blue/5 transition-all duration-200 py-4 px-4 rounded-lg border border-transparent hover:border-govt-blue/20"
                   >
                     <div className="w-2 h-2 rounded-full bg-govt-blue opacity-60"></div>
-                    <span>Our Services</span>
+                    <span>{t("nav.services")}</span>
                   </a>
                   <a
                     href="#documents"
@@ -172,7 +178,7 @@ const Navigation = () => {
                     className="flex items-center space-x-3 text-base font-medium text-foreground hover:text-govt-blue hover:bg-govt-blue/5 transition-all duration-200 py-4 px-4 rounded-lg border border-transparent hover:border-govt-blue/20"
                   >
                     <div className="w-2 h-2 rounded-full bg-govt-green opacity-60"></div>
-                    <span>Document Types</span>
+                    <span>{t("nav.documents")}</span>
                   </a>
                   <a
                     href="#verify"
@@ -180,7 +186,7 @@ const Navigation = () => {
                     className="flex items-center space-x-3 text-base font-medium text-foreground hover:text-govt-blue hover:bg-govt-blue/5 transition-all duration-200 py-4 px-4 rounded-lg border border-transparent hover:border-govt-blue/20"
                   >
                     <div className="w-2 h-2 rounded-full bg-govt-orange opacity-60"></div>
-                    <span>Security & Verify</span>
+                    <span>{t("nav.verify")}</span>
                   </a>
                   <a
                     href="#help"
@@ -188,7 +194,7 @@ const Navigation = () => {
                     className="flex items-center space-x-3 text-base font-medium text-foreground hover:text-govt-blue hover:bg-govt-blue/5 transition-all duration-200 py-4 px-4 rounded-lg border border-transparent hover:border-govt-blue/20"
                   >
                     <div className="w-2 h-2 rounded-full bg-govt-blue opacity-60"></div>
-                    <span>Get Help</span>
+                    <span>{t("nav.help")}</span>
                   </a>
                 </div>
 
@@ -203,7 +209,7 @@ const Navigation = () => {
                       size="lg"
                       className="w-full py-4 text-base font-semibold bg-gradient-to-r from-govt-blue to-govt-blue/90 hover:from-govt-blue/90 hover:to-govt-blue shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
                     >
-                      Register
+                      {t("nav.register")}
                     </Button>
                   </Link>
 

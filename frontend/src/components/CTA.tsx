@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { CheckCircle, ArrowRight, Users, Clock, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const CTA = () => {
+  const { t } = useLanguage();
   return (
     <section
       id="help"
@@ -15,48 +17,46 @@ const CTA = () => {
         <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-[#0D6EFD] rounded-full blur-3xl"></div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <Card className="bg-white/90 backdrop-blur-sm border-2 border-[#1D0A69]/10 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden">
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#1D0A69]/5 to-[#0D6EFD]/5"></div>
 
-          <CardContent className="p-10 lg:p-16 text-center relative z-10">
-            <div className="max-w-5xl mx-auto space-y-10">
-              <div className="space-y-6">
+          <CardContent className="p-6 sm:p-10 lg:p-16 text-center relative z-10">
+            <div className="max-w-5xl mx-auto space-y-6 sm:space-y-10">
+              <div className="space-y-4 sm:space-y-6">
                 <div className="inline-flex items-center bg-gradient-to-r from-[#0D6EFD]/10 to-[#198754]/10 text-[#0D6EFD] px-6 py-3 rounded-full text-base font-bold border border-[#0D6EFD]/20 backdrop-blur-sm">
                   <Shield className="w-5 h-5 mr-3" />
-                  🏆 Trusted by Millions
+                  🏆 {t("cta.trustedByMillions")}
                 </div>
 
-                <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-[#1D0A69] via-[#0D6EFD] to-[#198754] bg-clip-text text-transparent leading-tight">
-                  Start Using Your Digital Health Vault Today
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-[#1D0A69] via-[#0D6EFD] to-[#198754] bg-clip-text text-transparent leading-tight">
+                  {t("cta.title")}
                 </h2>
 
-                <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed max-w-4xl mx-auto">
-                  Join millions of Indians who have digitized their health
-                  documents. Get secure access to your medical records anytime,
-                  anywhere.
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 leading-relaxed max-w-4xl mx-auto px-2 sm:px-0">
+                  {t("cta.subtitle")}
                 </p>
               </div>{" "}
               {/* Stats */}
-              <div className="grid md:grid-cols-3 gap-8 py-8">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 py-6 sm:py-8">
                 {[
                   {
                     icon: Users,
                     count: "5M+",
-                    label: "Active Users",
+                    label: t("cta.stats.activeUsers"),
                     color: "#0D6EFD",
                   },
                   {
                     icon: Shield,
                     count: "50M+",
-                    label: "Documents Secured",
+                    label: t("cta.stats.documentsSecured"),
                     color: "#198754",
                   },
                   {
                     icon: Clock,
                     count: "99.9%",
-                    label: "Uptime Guarantee",
+                    label: t("cta.stats.uptimeGuarantee"),
                     color: "#1D0A69",
                   },
                 ].map((stat, index) => (
@@ -74,7 +74,7 @@ const CTA = () => {
                           style={{ color: stat.color }}
                         />
                       </div>
-                      <span className="text-3xl lg:text-4xl font-bold text-[#1D0A69]">
+                      <span className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-[#1D0A69]">
                         {stat.count}
                       </span>
                     </div>
@@ -87,9 +87,9 @@ const CTA = () => {
               {/* Benefits */}
               <div className="grid md:grid-cols-3 gap-6 py-8">
                 {[
-                  "Free for Personal Use",
-                  "Unlimited Storage for Docs",
-                  "24/7 Access",
+                  t("cta.benefits.freePersonalUse"),
+                  t("cta.benefits.unlimitedStorage"),
+                  t("cta.benefits.access24x7"),
                 ].map((benefit, index) => (
                   <div
                     key={index}
@@ -109,7 +109,7 @@ const CTA = () => {
                     size="lg"
                     className="font-bold text-lg lg:text-xl px-10 py-6 bg-gradient-to-r from-[#1D0A69] to-[#0D6EFD] hover:from-[#0D6EFD] hover:to-[#198754] text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 hover:-translate-y-2"
                   >
-                    🚀 Get Started Free
+                    🚀 {t("cta.buttons.getStartedFree")}
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </Link>
@@ -118,16 +118,16 @@ const CTA = () => {
                   size="lg"
                   className="font-bold text-lg lg:text-xl px-10 py-6 border-2 border-[#0D6EFD] text-[#0D6EFD] hover:bg-[#0D6EFD] hover:text-white rounded-full transition-all duration-300 transform hover:scale-105"
                 >
-                  📞 Contact Support
+                  📞 {t("cta.buttons.contactSupport")}
                 </Button>
               </div>
               {/* Government Badge */}
               <div className="pt-8 border-t border-gray-200">
                 <div className="inline-flex items-center bg-gradient-to-r from-[#1D0A69]/10 to-[#0D6EFD]/10 px-6 py-3 rounded-full">
                   <p className="text-sm lg:text-base text-gray-600 font-medium">
-                    🇮🇳 A Digital India Initiative | Government of India |
+                    🇮🇳 {t("cta.governmentBadge.initiative")} |
                     <span className="text-[#1D0A69] font-bold ml-1">
-                      Secure • Reliable • Accessible
+                      {t("cta.governmentBadge.features")}
                     </span>
                   </p>
                 </div>

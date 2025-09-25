@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Shield, FileText, Folder, Check } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Hero = () => {
+  const { t } = useLanguage();
   return (
     <section className="bg-gradient-to-br from-[#EBEAEA] via-white to-[#EBEAEA] relative overflow-hidden">
       {/* Decorative Background Elements */}
@@ -18,24 +20,17 @@ const Hero = () => {
             <div className="space-y-6 sm:space-y-8">
               <div className="inline-flex items-center bg-white/80 backdrop-blur-sm text-[#0D6EFD] px-4 sm:px-6 py-3 rounded-full border border-[#0D6EFD]/20 text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                 <FileText className="w-3 h-3 sm:w-4 sm:h-4 mr-2 sm:mr-3" />
-                <span className="font-semibold">
-                  Digital India Health Initiative
-                </span>
+                <span className="font-semibold">{t("home.title")}</span>
               </div>
 
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#1D0A69] leading-tight animate-fade-in">
                 <span className="bg-gradient-to-r from-[#1D0A69] to-[#0D6EFD] bg-clip-text text-transparent">
-                  Bridging
-                </span>
-                <br />
-                <span className="text-[#0D6EFD] block animate-slide-up">
-                  Ayush & Modern Medicine
+                  {t("home.subtitle")}
                 </span>
               </h1>
 
               <p className="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-xl animate-fade-in-up">
-                Connecting AYUSH systems with ICD-11 through NAMASTE for
-                comprehensive, globally recognized patient care.
+                {t("home.description")}
               </p>
             </div>
 
@@ -68,7 +63,7 @@ const Hero = () => {
                   size="lg"
                   className="font-semibold text-base sm:text-lg w-full px-8 py-4 bg-gradient-to-r from-[#1D0A69] to-[#0D6EFD] hover:from-[#0D6EFD] hover:to-[#1D0A69] text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
                 >
-                  🚀 Create Your Health Vault
+                  🚀 {t("home.getStarted")}
                 </Button>
               </Link>
             </div>

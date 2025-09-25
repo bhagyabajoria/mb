@@ -8,10 +8,14 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Logo from "@/components/Logo";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { FolderOpen, Shield, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Login = () => {
+  const { t } = useLanguage();
+
   const handleGoogleLogin = () => {
     // Google OAuth integration with your actual client ID
     const clientId =
@@ -82,8 +86,9 @@ const Login = () => {
       <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg space-y-6 sm:space-y-8 animate-in slide-in-from-bottom-8 duration-700 delay-200">
         {/* Header */}
         <div className="text-center space-y-3 sm:space-y-4 animate-in slide-in-from-top-4 duration-600 delay-300">
-          <div className="flex justify-center animate-in slide-in-from-right-4 duration-600 delay-500">
+          <div className="flex justify-center items-center space-x-4 animate-in slide-in-from-right-4 duration-600 delay-500">
             <Logo size="lg" showText={true} to="/" />
+            <LanguageSwitcher variant="compact" />
           </div>
         </div>
 
@@ -91,10 +96,10 @@ const Login = () => {
         <Card className="bg-card/50 backdrop-blur-sm border-border/50 shadow-xl animate-in slide-in-from-bottom-6 duration-800 delay-600 hover:shadow-2xl transition-shadow duration-300 mx-auto">
           <CardHeader className="text-center space-y-2 pb-3 sm:pb-4 px-4 sm:px-6 animate-in fade-in duration-600 delay-800">
             <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground animate-in slide-in-from-top-2 duration-500 delay-900">
-              Welcome Back
+              {t("login.title")}
             </CardTitle>
             <CardDescription className="text-sm sm:text-base text-muted-foreground animate-in slide-in-from-top-2 duration-500 delay-1000">
-              Access your secure health vault with Google
+              {t("login.subtitle")}
             </CardDescription>
           </CardHeader>
 
@@ -124,15 +129,14 @@ const Login = () => {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                 />
               </svg>
-              Continue with Google
+              {t("login.continueWithGoogle")}
             </Button>
 
-            
             {/* Security Badge */}
             <div className="flex items-center justify-center space-x-2 pt-2 sm:pt-3 border-t border-border/50 animate-in slide-in-from-bottom-2 duration-500 delay-1700">
               <Shield className="w-3 h-3 sm:w-4 sm:h-4 text-govt-green animate-pulse" />
               <span className="text-xs sm:text-xs text-muted-foreground text-center">
-                Protected by Government-grade Security
+                {t("login.securityMessage")}
               </span>
             </div>
           </CardContent>
@@ -141,21 +145,21 @@ const Login = () => {
         {/* Footer */}
         <div className="text-center space-y-2 sm:space-y-2 animate-in fade-in duration-600 delay-1800 px-2">
           <p className="text-xs sm:text-xs text-muted-foreground animate-in slide-in-from-bottom-1 duration-400 delay-1900 leading-relaxed">
-            By continuing, you agree to our Terms of Service and Privacy Policy
+            {t("login.agreement")}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-4 text-xs text-muted-foreground animate-in slide-in-from-bottom-1 duration-400 delay-2000">
             <Link
               to="/"
               className="hover:text-govt-blue hover:scale-105 transition-all duration-200 px-2 py-1"
             >
-              Back to Home
+              {t("login.backToHome")}
             </Link>
             <span className="hidden sm:inline">•</span>
             <a
               href="#"
               className="hover:text-govt-blue hover:scale-105 transition-all duration-200 px-2 py-1"
             >
-              Help Center
+              {t("login.helpCenter")}
             </a>
           </div>
         </div>
