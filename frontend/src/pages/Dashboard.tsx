@@ -689,16 +689,16 @@ const Dashboard = () => {
             {/* Verification Progress */}
             <Card>
               <CardHeader>
-                <CardTitle>Verification Progress</CardTitle>
+                <CardTitle>{t("verification.progress.title")}</CardTitle>
                 <CardDescription>
-                  Track your health record verification status
+                  {t("verification.progress.subtitle")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>Overall Verification</span>
+                      <span>{t("verification.progress.overall")}</span>
                       <span>{getVerificationRate()}%</span>
                     </div>
                     <Progress value={getVerificationRate()} className="h-2" />
@@ -709,20 +709,26 @@ const Dashboard = () => {
                       <div className="text-2xl font-bold text-green-600">
                         {stats?.verifiedRecords || 0}
                       </div>
-                      <div className="text-xs text-gray-600">Verified</div>
+                      <div className="text-xs text-gray-600">
+                        {t("verification.progress.verified")}
+                      </div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-yellow-600">
                         {(stats?.totalRecords || 0) -
                           (stats?.verifiedRecords || 0)}
                       </div>
-                      <div className="text-xs text-gray-600">Pending</div>
+                      <div className="text-xs text-gray-600">
+                        {t("verification.progress.pending")}
+                      </div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-gray-600">
                         {stats?.totalRecords || 0}
                       </div>
-                      <div className="text-xs text-gray-600">Total</div>
+                      <div className="text-xs text-gray-600">
+                        {t("verification.progress.total")}
+                      </div>
                     </div>
                   </div>
                 </div>

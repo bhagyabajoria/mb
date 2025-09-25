@@ -37,10 +37,10 @@ const Hero = () => {
             {/* Key Features */}
             <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 sm:gap-6">
               {[
-                "Secure Cloud Storage",
-                "Document Verification",
-                "Instant Sharing",
-                "Mobile Access",
+                t("home.features.secureStorage"),
+                t("home.features.docVerification"),
+                t("home.features.instantShare"),
+                t("home.features.mobileAccess"),
               ].map((feature, index) => (
                 <div
                   key={index}
@@ -71,9 +71,21 @@ const Hero = () => {
             {/* Trust Indicators */}
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-8 pt-8 border-t border-white/30">
               {[
-                { icon: Shield, text: "SSL Secured", color: "#198754" },
-                { icon: FileText, text: "ISO 27001", color: "#0D6EFD" },
-                { icon: Folder, text: "HIPAA Compliant", color: "#1D0A69" },
+                {
+                  icon: Shield,
+                  text: t("home.security.sslSecured"),
+                  color: "#198754",
+                },
+                {
+                  icon: FileText,
+                  text: t("home.security.iso27001"),
+                  color: "#0D6EFD",
+                },
+                {
+                  icon: Folder,
+                  text: t("home.security.hipaaCompliant"),
+                  color: "#1D0A69",
+                },
               ].map((item, index) => (
                 <div
                   key={index}

@@ -309,7 +309,7 @@ const HealthRecords = () => {
       // Save to localStorage
       localStorage.setItem("health_records", JSON.stringify(updatedRecords));
 
-      toast.success("Record verified successfully");
+      toast.success(t("verification.success"));
 
       // Try API call in background (optional)
       try {
@@ -331,7 +331,7 @@ const HealthRecords = () => {
       }
     } catch (error) {
       console.error("Verification failed:", error);
-      toast.error("Verification failed");
+      toast.error(t("verification.error"));
     }
   };
 
@@ -422,7 +422,7 @@ const HealthRecords = () => {
       // Prepare data for Excel export (use filtered records for current view)
       const exportData = filteredRecords.map((record) => ({
         "Patient Name": record.title,
-        "Record Type": record.record_type.replace("_", " ").toUpperCase(),
+        "Record Type": getRecordTypeTranslation(record.record_type),
         Description: record.description,
         "ICD-11 Code": record.icd11_code || "",
         "ICD-11 Title": record.icd11_title || "",
@@ -561,6 +561,21 @@ const HealthRecords = () => {
     "other",
   ];
 
+  const getRecordTypeTranslation = (type: string) => {
+    const typeMap: { [key: string]: string } = {
+      consultation: t("records.types.consultation"),
+      lab_result: t("records.types.labResult"),
+      prescription: t("records.types.prescription"),
+      imaging: t("records.types.imaging"),
+      surgery: t("records.types.surgery"),
+      vaccination: t("records.types.vaccination"),
+      emergency: t("records.types.emergency"),
+      follow_up: t("records.types.followUp"),
+      other: t("records.types.other"),
+    };
+    return typeMap[type] || type;
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -572,339 +587,391 @@ const HealthRecords = () => {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-7xl">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-6 sm:mb-8">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-          <div className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navigate("/dashboard")}
-              className="flex items-center gap-2"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              <span className="hidden sm:inline">Back</span>
-            </Button>
-            <Logo size="md" showText={true} to="/" />
-          </div>
-          <div className="space-y-1 sm:space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-              {t("records.title")}
-            </h1>
-            <p className="text-sm sm:text-base text-gray-600">
-              {t("nav.healthRecords")}
-            </p>
-          </div>
+      <div className="space-y-3 md:space-y-4 mb-6 sm:mb-8">
+        {/* Back Button - Separate row only for mobile and small tablet portrait */}
+        <div className="flex items-center gap-3 xl:hidden">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate("/dashboard")}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span>Back</span>
+          </Button>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-          <LanguageSwitcher variant="compact" />
-          <Button
-            variant="outline"
-            className="flex items-center gap-2"
-            onClick={handleCreateSampleRecord}
-          >
-            <FileText className="h-4 w-4" />
-            Add Sample Record
-          </Button>
-
-          <Button
-            variant="outline"
-            className="flex items-center gap-2"
-            onClick={handleExportToExcel}
-          >
-            <Download className="h-4 w-4" />
-            Export to Excel
-          </Button>
-
-          <Button
-            className="flex items-center gap-2"
-            onClick={() => setIsDialogOpen(true)}
-          >
-            <Plus className="h-4 w-4" />
-            {t("records.addNew")}
-          </Button>
-
-          <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
-            <DialogContent className="max-w-[95vw] sm:max-w-xl md:max-w-2xl lg:max-w-3xl max-h-[90vh] overflow-y-auto mx-2 sm:mx-4">
-              <DialogHeader>
-                <DialogTitle className="text-base sm:text-lg md:text-xl">
-                  {editingRecordId
-                    ? t("records.editRecord")
-                    : t("records.createNewRecord")}
-                </DialogTitle>
-                <DialogDescription className="text-xs sm:text-sm md:text-base">
-                  {t("records.dialogDescription")}
-                </DialogDescription>
-              </DialogHeader>
-
-              <form
-                onSubmit={handleCreateRecord}
-                className="space-y-4 sm:space-y-6"
+        {/* Main Header Content */}
+        <div className="flex flex-col xl:flex-row xl:justify-between xl:items-start gap-4">
+          <div className="flex flex-col xl:flex-row xl:items-center gap-3 xl:gap-4">
+            {/* Back Button for Desktop */}
+            <div className="hidden xl:flex items-center gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => navigate("/dashboard")}
+                className="flex items-center gap-2"
               >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="recordType" className="text-sm font-medium">
-                      {t("records.recordType")}
-                    </Label>
-                    <Select
-                      value={formData.recordType}
-                      onValueChange={(value) =>
-                        setFormData({ ...formData, recordType: value })
-                      }
-                    >
-                      <SelectTrigger className="h-10 sm:h-11">
-                        <SelectValue
-                          placeholder={t("records.selectRecordType")}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {recordTypes.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {type
-                              .replace("_", " ")
-                              .replace(/\b\w/g, (l) => l.toUpperCase())}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                <ArrowLeft className="h-4 w-4" />
+                <span>Back</span>
+              </Button>
+              <Logo size="md" showText={true} to="/" />
+            </div>
 
-                  <div>
-                    <Label htmlFor="severity" className="text-sm font-medium">
-                      {t("records.severity")}
-                    </Label>
-                    <Select
-                      value={formData.severity}
-                      onValueChange={(value) =>
-                        setFormData({ ...formData, severity: value })
-                      }
-                    >
-                      <SelectTrigger className="h-10 sm:h-11">
-                        <SelectValue
-                          placeholder={t("records.selectSeverity")}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="mild">
-                          {t("records.severityMild")}
-                        </SelectItem>
-                        <SelectItem value="moderate">
-                          {t("records.severityModerate")}
-                        </SelectItem>
-                        <SelectItem value="severe">
-                          {t("records.severitySevere")}
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
+            {/* Logo and Title for Mobile/Tablet (both orientations) */}
+            <div className="flex flex-col sm:flex-row sm:items-center md:flex-row md:items-center gap-3 xl:hidden">
+              <Logo size="md" showText={true} to="/" />
+              <div className="space-y-1">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
+                  {t("records.title")}
+                </h1>
+                <p className="text-sm sm:text-base text-gray-600">
+                  {t("nav.healthRecords")}
+                </p>
+              </div>
+            </div>
 
-                <div>
-                  <Label htmlFor="title" className="text-sm font-medium">
-                    {t("records.patientName")}
-                  </Label>
-                  <Input
-                    id="title"
-                    value={formData.title}
-                    onChange={(e) =>
-                      setFormData({ ...formData, title: e.target.value })
-                    }
-                    placeholder={t("records.patientNamePlaceholder")}
-                    className="h-10 sm:h-11"
-                    required
-                  />
-                </div>
+            {/* Title for Desktop */}
+            <div className="hidden xl:block space-y-1">
+              <h1 className="text-3xl font-bold text-gray-900">
+                {t("records.title")}
+              </h1>
+              <p className="text-base text-gray-600">
+                {t("nav.healthRecords")}
+              </p>
+            </div>
+          </div>
 
-                {/* Description field removed as requested */}
+          <div className="flex flex-col sm:flex-row md:flex-row items-stretch sm:items-center md:items-center gap-2 sm:gap-3 md:gap-2 lg:gap-3">
+            <LanguageSwitcher variant="compact" />
+            <Button
+              variant="outline"
+              className="flex items-center gap-2 text-sm md:text-xs lg:text-sm"
+              onClick={handleCreateSampleRecord}
+            >
+              <FileText className="h-4 w-4" />
+              <span className="hidden sm:inline md:hidden lg:inline">
+                {t("records.addSample")}
+              </span>
+              <span className="sm:hidden md:inline lg:hidden">Sample</span>
+            </Button>
 
-                {/* Disease Section */}
-                <div className="grid grid-cols-1 gap-4">
-                  <div>
-                    <CustomDiseaseSearch
-                      onSelect={(disease: CustomDisease) => {
-                        setFormData({
-                          ...formData,
-                          icd11Code: disease.icdCode,
-                          icd11Title: disease.name,
-                          diagnosis: disease.name,
-                          namasteName: disease.namaste,
-                          symptoms: disease.symptoms.join(", "),
-                        });
-                      }}
-                      label={t("records.diseaseSearchLabel")}
-                      placeholder={t("records.diseaseSearchPlaceholder")}
-                      value={formData.icd11Title}
-                    />
-                  </div>
-                  <div>
-                    <Label
-                      htmlFor="namasteName"
-                      className="text-sm font-medium"
-                    >
-                      {t("records.namasteName")}
-                    </Label>
-                    <Input
-                      id="namasteName"
-                      value={formData.namasteName}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          namasteName: e.target.value,
-                        })
-                      }
-                      placeholder={t("records.namasteNamePlaceholder")}
-                      className="h-10 sm:h-11"
-                    />
-                  </div>
+            <Button
+              variant="outline"
+              className="flex items-center gap-2 text-sm md:text-xs lg:text-sm"
+              onClick={handleExportToExcel}
+            >
+              <Download className="h-4 w-4" />
+              <span className="hidden sm:inline md:hidden lg:inline">
+                {t("records.exportExcel")}
+              </span>
+              <span className="sm:hidden md:inline lg:hidden">Export</span>
+            </Button>
+
+            <Button
+              className="flex items-center gap-2 text-sm md:text-xs lg:text-sm"
+              onClick={() => setIsDialogOpen(true)}
+            >
+              <Plus className="h-4 w-4" />
+              <span className="hidden sm:inline md:hidden lg:inline">
+                {t("records.addNew")}
+              </span>
+              <span className="sm:hidden md:inline lg:hidden">Add</span>
+            </Button>
+
+            <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
+              <DialogContent className="max-w-[95vw] sm:max-w-xl md:max-w-2xl lg:max-w-3xl max-h-[90vh] overflow-y-auto mx-2 sm:mx-4">
+                <DialogHeader>
+                  <DialogTitle className="text-base sm:text-lg md:text-xl">
+                    {editingRecordId
+                      ? t("records.editRecord")
+                      : t("records.createNewRecord")}
+                  </DialogTitle>
+                  <DialogDescription className="text-xs sm:text-sm md:text-base">
+                    {t("records.dialogDescription")}
+                  </DialogDescription>
+                </DialogHeader>
+
+                <form
+                  onSubmit={handleCreateRecord}
+                  className="space-y-4 sm:space-y-6"
+                >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <Label
-                        htmlFor="icd11Code"
+                        htmlFor="recordType"
                         className="text-sm font-medium"
                       >
-                        {t("records.icd11Code")}
+                        {t("records.recordType")}
                       </Label>
-                      <Input
-                        id="icd11Code"
-                        value={formData.icd11Code}
-                        onChange={(e) =>
+                      <Select
+                        value={formData.recordType}
+                        onValueChange={(value) =>
+                          setFormData({ ...formData, recordType: value })
+                        }
+                      >
+                        <SelectTrigger className="h-10 sm:h-11">
+                          <SelectValue
+                            placeholder={t("records.selectRecordType")}
+                          />
+                        </SelectTrigger>
+                        <SelectContent
+                          side="bottom"
+                          align="start"
+                          className="max-h-60 overflow-y-auto"
+                        >
+                          {recordTypes.map((type) => (
+                            <SelectItem key={type} value={type}>
+                              {getRecordTypeTranslation(type)}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="severity" className="text-sm font-medium">
+                        {t("records.severity")}
+                      </Label>
+                      <Select
+                        value={formData.severity}
+                        onValueChange={(value) =>
+                          setFormData({ ...formData, severity: value })
+                        }
+                      >
+                        <SelectTrigger className="h-10 sm:h-11">
+                          <SelectValue
+                            placeholder={t("records.selectSeverity")}
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="mild">
+                            {t("records.severityMild")}
+                          </SelectItem>
+                          <SelectItem value="moderate">
+                            {t("records.severityModerate")}
+                          </SelectItem>
+                          <SelectItem value="severe">
+                            {t("records.severitySevere")}
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="title" className="text-sm font-medium">
+                      {t("records.patientName")}
+                    </Label>
+                    <Input
+                      id="title"
+                      value={formData.title}
+                      onChange={(e) =>
+                        setFormData({ ...formData, title: e.target.value })
+                      }
+                      placeholder={t("records.patientNamePlaceholder")}
+                      className="h-10 sm:h-11"
+                      required
+                    />
+                  </div>
+
+                  {/* Description field removed as requested */}
+
+                  {/* Disease Section */}
+                  <div className="grid grid-cols-1 gap-4">
+                    <div>
+                      <CustomDiseaseSearch
+                        onSelect={(disease: CustomDisease) => {
                           setFormData({
                             ...formData,
-                            icd11Code: e.target.value,
-                          })
-                        }
-                        placeholder={t("records.icd11CodePlaceholder")}
-                        className="h-10 sm:h-11"
+                            icd11Code: disease.icdCode,
+                            icd11Title: disease.name,
+                            diagnosis: disease.name,
+                            namasteName: disease.namaste,
+                            symptoms: disease.symptoms.join(", "),
+                          });
+                        }}
+                        label={t("records.diseaseSearchLabel")}
+                        placeholder={t("records.diseaseSearchPlaceholder")}
+                        value={formData.icd11Title}
                       />
                     </div>
                     <div>
                       <Label
-                        htmlFor="icd11Title"
+                        htmlFor="namasteName"
                         className="text-sm font-medium"
                       >
-                        {t("records.icd11Title")}
+                        {t("records.namasteName")}
                       </Label>
                       <Input
-                        id="icd11Title"
-                        value={formData.icd11Title}
+                        id="namasteName"
+                        value={formData.namasteName}
                         onChange={(e) =>
                           setFormData({
                             ...formData,
-                            icd11Title: e.target.value,
+                            namasteName: e.target.value,
                           })
                         }
-                        placeholder={t("records.icd11TitlePlaceholder")}
+                        placeholder={t("records.namasteNamePlaceholder")}
+                        className="h-10 sm:h-11"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <Label
+                          htmlFor="icd11Code"
+                          className="text-sm font-medium"
+                        >
+                          {t("records.icd11Code")}
+                        </Label>
+                        <Input
+                          id="icd11Code"
+                          value={formData.icd11Code}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              icd11Code: e.target.value,
+                            })
+                          }
+                          placeholder={t("records.icd11CodePlaceholder")}
+                          className="h-10 sm:h-11"
+                        />
+                      </div>
+                      <div>
+                        <Label
+                          htmlFor="icd11Title"
+                          className="text-sm font-medium"
+                        >
+                          {t("records.icd11Title")}
+                        </Label>
+                        <Input
+                          id="icd11Title"
+                          value={formData.icd11Title}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              icd11Title: e.target.value,
+                            })
+                          }
+                          placeholder={t("records.icd11TitlePlaceholder")}
+                          className="h-10 sm:h-11"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="diagnosis" className="text-sm font-medium">
+                      {t("records.diagnosis")}
+                    </Label>
+                    <Textarea
+                      id="diagnosis"
+                      value={formData.diagnosis}
+                      onChange={(e) =>
+                        setFormData({ ...formData, diagnosis: e.target.value })
+                      }
+                      placeholder={t("records.diagnosisPlaceholder")}
+                      rows={2}
+                      className="min-h-[60px] sm:min-h-[80px] resize-none"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="symptoms" className="text-sm font-medium">
+                      {t("records.symptoms")}
+                    </Label>
+                    <Input
+                      id="symptoms"
+                      value={formData.symptoms}
+                      onChange={(e) =>
+                        setFormData({ ...formData, symptoms: e.target.value })
+                      }
+                      placeholder={t("records.symptomsPlaceholder")}
+                      className="h-10 sm:h-11"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label
+                        htmlFor="doctorName"
+                        className="text-sm font-medium"
+                      >
+                        {t("records.doctorName")}
+                      </Label>
+                      <Input
+                        id="doctorName"
+                        value={formData.doctorName}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            doctorName: e.target.value,
+                          })
+                        }
+                        placeholder={t("records.doctorNamePlaceholder")}
+                        className="h-10 sm:h-11"
+                      />
+                    </div>
+
+                    <div>
+                      <Label
+                        htmlFor="hospitalName"
+                        className="text-sm font-medium"
+                      >
+                        {t("records.hospitalClinic")}
+                      </Label>
+                      <Input
+                        id="hospitalName"
+                        value={formData.hospitalName}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            hospitalName: e.target.value,
+                          })
+                        }
+                        placeholder={t("records.hospitalClinicPlaceholder")}
                         className="h-10 sm:h-11"
                       />
                     </div>
                   </div>
-                </div>
 
-                <div>
-                  <Label htmlFor="diagnosis" className="text-sm font-medium">
-                    {t("records.diagnosis")}
-                  </Label>
-                  <Textarea
-                    id="diagnosis"
-                    value={formData.diagnosis}
-                    onChange={(e) =>
-                      setFormData({ ...formData, diagnosis: e.target.value })
-                    }
-                    placeholder={t("records.diagnosisPlaceholder")}
-                    rows={2}
-                    className="min-h-[60px] sm:min-h-[80px] resize-none"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="symptoms" className="text-sm font-medium">
-                    {t("records.symptoms")}
-                  </Label>
-                  <Input
-                    id="symptoms"
-                    value={formData.symptoms}
-                    onChange={(e) =>
-                      setFormData({ ...formData, symptoms: e.target.value })
-                    }
-                    placeholder={t("records.symptomsPlaceholder")}
-                    className="h-10 sm:h-11"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="doctorName" className="text-sm font-medium">
-                      {t("records.doctorName")}
+                    <Label htmlFor="visitDate" className="text-sm font-medium">
+                      {t("records.visitDate")}
                     </Label>
                     <Input
-                      id="doctorName"
-                      value={formData.doctorName}
+                      id="visitDate"
+                      type="date"
+                      value={formData.visitDate}
                       onChange={(e) =>
-                        setFormData({ ...formData, doctorName: e.target.value })
+                        setFormData({ ...formData, visitDate: e.target.value })
                       }
-                      placeholder={t("records.doctorNamePlaceholder")}
                       className="h-10 sm:h-11"
                     />
                   </div>
 
-                  <div>
-                    <Label
-                      htmlFor="hospitalName"
-                      className="text-sm font-medium"
+                  <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-4">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setIsDialogOpen(false)}
+                      className="w-full sm:w-auto text-sm sm:text-base h-10 sm:h-11"
                     >
-                      {t("records.hospitalClinic")}
-                    </Label>
-                    <Input
-                      id="hospitalName"
-                      value={formData.hospitalName}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          hospitalName: e.target.value,
-                        })
-                      }
-                      placeholder={t("records.hospitalClinicPlaceholder")}
-                      className="h-10 sm:h-11"
-                    />
+                      {t("records.cancel")}
+                    </Button>
+                    <Button
+                      type="submit"
+                      className="w-full sm:w-auto text-sm sm:text-base h-10 sm:h-11"
+                    >
+                      {editingRecordId
+                        ? t("records.updateRecord")
+                        : t("records.createRecord")}
+                    </Button>
                   </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="visitDate" className="text-sm font-medium">
-                    {t("records.visitDate")}
-                  </Label>
-                  <Input
-                    id="visitDate"
-                    type="date"
-                    value={formData.visitDate}
-                    onChange={(e) =>
-                      setFormData({ ...formData, visitDate: e.target.value })
-                    }
-                    className="h-10 sm:h-11"
-                  />
-                </div>
-
-                <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-4">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setIsDialogOpen(false)}
-                    className="w-full sm:w-auto text-sm sm:text-base h-10 sm:h-11"
-                  >
-                    {t("records.cancel")}
-                  </Button>
-                  <Button
-                    type="submit"
-                    className="w-full sm:w-auto text-sm sm:text-base h-10 sm:h-11"
-                  >
-                    {editingRecordId
-                      ? t("records.updateRecord")
-                      : t("records.createRecord")}
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
       </div>
 
@@ -913,7 +980,7 @@ const HealthRecords = () => {
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           <Input
-            placeholder="Search health records..."
+            placeholder={t("records.search")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10 h-10 sm:h-11"
@@ -921,15 +988,17 @@ const HealthRecords = () => {
         </div>
         <Select value={filterType} onValueChange={setFilterType}>
           <SelectTrigger className="w-full sm:w-48 h-10 sm:h-11">
-            <SelectValue placeholder="Filter by type" />
+            <SelectValue placeholder={t("records.filterByType")} />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
+          <SelectContent
+            side="bottom"
+            align="start"
+            className="max-h-60 overflow-y-auto"
+          >
+            <SelectItem value="all">{t("records.allTypes")}</SelectItem>
             {recordTypes.map((type) => (
               <SelectItem key={type} value={type}>
-                {type
-                  .replace("_", " ")
-                  .replace(/\b\w/g, (l) => l.toUpperCase())}
+                {getRecordTypeTranslation(type)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -947,7 +1016,7 @@ const HealthRecords = () => {
                     {record.title}
                   </CardTitle>
                   <CardDescription className="capitalize text-sm">
-                    {record.record_type.replace("_", " ")}
+                    {getRecordTypeTranslation(record.record_type)}
                   </CardDescription>
                 </div>
                 <DropdownMenu>
@@ -1078,7 +1147,9 @@ const HealthRecords = () => {
                       className="flex items-center gap-1 text-xs sm:text-sm h-7 sm:h-8 shrink-0"
                     >
                       <Shield className="h-3 w-3" />
-                      <span className="hidden sm:inline">Verify</span>
+                      <span className="hidden sm:inline">
+                        {t("verification.verify")}
+                      </span>
                       <span className="sm:hidden">✓</span>
                     </Button>
                   )}
@@ -1094,13 +1165,13 @@ const HealthRecords = () => {
           <FileText className="h-10 w-10 sm:h-12 sm:w-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
           <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">
             {searchTerm || filterType !== "all"
-              ? "No matching records"
-              : "No health records yet"}
+              ? t("records.noMatchingRecords")
+              : t("records.noRecordsYet")}
           </h3>
           <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 max-w-md mx-auto leading-relaxed">
             {searchTerm || filterType !== "all"
-              ? "Try adjusting your search or filter criteria"
-              : "Start by adding your first health record"}
+              ? t("records.adjustSearch")
+              : t("records.startAdding")}
           </p>
           {!searchTerm && filterType === "all" && (
             <Button
@@ -1108,7 +1179,7 @@ const HealthRecords = () => {
               className="text-sm sm:text-base h-10 sm:h-11 px-6"
             >
               <Plus className="h-4 w-4 mr-2" />
-              Add Your First Record
+              {t("records.addFirstRecord")}
             </Button>
           )}
         </div>
